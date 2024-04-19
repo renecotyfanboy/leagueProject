@@ -1,3 +1,40 @@
-site_name: Data Science with League of Legends
+site_name: LeagueProject
+
+site_url: https://renecotyfanboy.github.io/leagueProject/
+
+nav:
+  - Introduction:
+    - introduction/index.md
+  - Around the LoserQ:
+    - loserQ/motivation.md
+    - loserQ/history.md
+    - loserQ/conclusion.md
+
 theme:
   name: material
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      primary: purple
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: purple
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode`
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.sections
+    - navigation.path
+
+plugins:
+  - search
+  - autorefs
+
+extra_css:
+  - css/material.css
