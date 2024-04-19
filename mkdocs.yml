@@ -19,7 +19,6 @@ theme:
       toggle:
         icon: material/weather-night
         name: Switch to dark mode
-
     # Palette toggle for dark mode
     - scheme: slate
       primary: purple
@@ -27,14 +26,45 @@ theme:
         icon: material/weather-sunny
         name: Switch to light mode`
   features:
-    - navigation.instant
-    - navigation.instant.progress
+   # - navigation.instant
+   # - navigation.instant.progress
     - navigation.sections
     - navigation.path
 
 plugins:
   - search
   - autorefs
+  - plotly
 
-extra_css:
-  - css/material.css
+use_directory_urls: true
+
+markdown_extensions:
+  - attr_list
+  - meta
+  - admonition
+  - pymdownx.keys
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      base_path: [ 'docs' ]
+  - pymdownx.superfences:
+      custom_fences:
+        - name: plotly
+          class: mkdocs-plotly
+          format: !!python/name:mkdocs_plotly_plugin.fences.fence_plotly
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+
+extra:
+  generator: false
+
+#extra_css:
+#  - css/material.css
