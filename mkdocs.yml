@@ -3,8 +3,9 @@ site_name: LeagueProject
 site_url: https://renecotyfanboy.github.io/leagueProject/
 
 nav:
-  - Introduction:
-    - introduction/index.md
+  - Home: index.md
+  - Dataset:
+    - dataset/index.md
   - Around the LoserQ:
     - loserQ/motivation.md
     - loserQ/history.md
@@ -12,6 +13,9 @@ nav:
 
 theme:
   name: material
+  icon:
+    favicon: simple/leagueoflegends
+    logo: simple/leagueoflegends
   palette:
     # Palette toggle for light mode
     - scheme: default
@@ -28,8 +32,11 @@ theme:
   features:
    # - navigation.instant
    # - navigation.instant.progress
+    - navigation.indexes
     - navigation.sections
     - navigation.path
+    - content.code.annotate
+    - content.code.copy
 
 plugins:
   - search
@@ -40,8 +47,11 @@ use_directory_urls: true
 
 markdown_extensions:
   - attr_list
+  - tables
+  - md_in_html
   - meta
   - admonition
+  - pymdownx.details
   - pymdownx.keys
   - pymdownx.tabbed:
       alternate_style: true
@@ -62,6 +72,23 @@ markdown_extensions:
           format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      options:
+        custom_icons:
+          - overrides/.icons
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - javascripts/katex.js
+  - https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.js
+  - https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/contrib/auto-render.min.js
+
+extra_css:
+  - https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.css
+  - css/material.css
 
 extra:
   generator: false

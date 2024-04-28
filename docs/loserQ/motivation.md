@@ -1,1 +1,8 @@
 # Motivations
+
+RIOT is cheating with the fairness -> investigate history of games -> prove that losers queue exists
+RIOT is matching you with filled people or bad players -> investigate the performance of players
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Losers queue doesn&#39;t exist<br><br>We&#39;re not intentionally putting bad players on your team to make you lose more. <br><br>(Even if we assumed that premise, wouldn&#39;t we want to give you good players so you stop losing?)<br><br>For ranked, we match you on your rating and that&#39;s all. If you&#39;ve won a…</p>&mdash; Matt Leung-Harrison (@RiotPhroxzon) <a href="https://twitter.com/RiotPhroxzon/status/1756511358571643286?ref_src=twsrc%5Etfw">February 11, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet" data-conversation="none" data-theme="light"><p lang="en" dir="ltr">Losers queue does exist (so does winning queue)<br><br>You are intentionally putting bad players on our team to make us lose more game because that creates addiction and the game itself would have less value and be much more boring if we literally win every single game. I will prove…</p>&mdash; Ivo &quot;Linepro&quot; Kolev (@ivo_kk) <a href="https://twitter.com/ivo_kk/status/1756650648248955167?ref_src=twsrc%5Etfw">February 11, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 

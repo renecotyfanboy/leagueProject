@@ -24,3 +24,15 @@
   -webkit-mask-image: var(--md-admonition-icon--preview);
   mask-image: var(--md-admonition-icon--preview);
 }
+
+.mermaid {
+    text-align: center;
+ }
+
+/* extra-styles.css */
+.md-typeset .md-typeset__table {
+    display: block;
+}
+.md-typeset__table table:not([class]) {
+    display: table;
+}
