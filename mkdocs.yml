@@ -42,6 +42,9 @@ plugins:
   - search
   - autorefs
   - plotly
+  - glightbox:
+      auto_caption: false
+      caption_position: bottom
 
 use_directory_urls: true
 

@@ -29,6 +29,7 @@ jobs:
       - run: pip install git+https://${GH_TOKEN}@github.com/squidfunk/mkdocs-material-insiders.git
       - run: pip install mkdocs-plotly-plugin
       - run: pip install mkdocs-autorefs
+      - run: pip install mkdocs-glightbox
       - run: mkdocs gh-deploy --force
 env:
   GH_TOKEN: ${{ secrets.GH_TOKEN }}

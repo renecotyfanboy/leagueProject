@@ -245,7 +245,7 @@ a sequence of games where the outcome of a game depends on the previous game onl
 ```
 
 ??? note 
-    I illustrate the graph of the markov models used to show how the auto-correlation behaves.
+    The graph of  of the markov models used to draw the previous plot are the following : 
 
     <div class="grid cards" markdown>
 
@@ -278,19 +278,24 @@ a sequence of games where the outcome of a game depends on the previous game onl
 
     </div>
 
+The envelope of the previous graph represents the spread on this measure due to computing this auto-correlation for a 
+set of individual game histories. This auto-correlation varies from one player to another, and this envelopes gives us
+an idea of how much this quantity varies. 
+
 ## Distribution of the streak lengths
 
+Some stuff about streak lengths.
 
+## Validation of the methodology
 
+We test the methodology on LoserQ-like **simulated** data. I show that we can recover the good parameters of the model
+using mock data.
 
+![Corner light](assets/test_summaries_corner.png#only-light){ data-title="A posteriori distributions for the transition probability" data-description="yeyeyeye" }
 
-
-
-I am testing stuff
-
-
+![Corner_dark](assets/test_summaries_corner_dark.png#only-dark){ data-title="A posteriori distributions for the transition probability" data-description="yeyeyeye" }
 
 ## Applying the method to true data 
 Does it work ?
 
-## Instantaneous winrate analysis
+## Instantaneous winrate analysis? 
