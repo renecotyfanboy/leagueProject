@@ -30,6 +30,7 @@ jobs:
       - run: pip install mkdocs-plotly-plugin
       - run: pip install mkdocs-autorefs
       - run: pip install mkdocs-glightbox
+      - run: pip install mkdocs-macros-plugin
       - run: mkdocs gh-deploy --force
 env:
   GH_TOKEN: ${{ secrets.GH_TOKEN }}

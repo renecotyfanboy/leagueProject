@@ -9,6 +9,8 @@ nav:
   - Around the LoserQ:
     - loserQ/motivation.md
     - loserQ/history.md
+    - loserQ/distribution.md
+    - loserQ/autocorrelation.md
     - loserQ/conclusion.md
 
 theme:
@@ -30,9 +32,9 @@ theme:
         icon: material/weather-sunny
         name: Switch to light mode`
   features:
-   # - navigation.instant
-   # - navigation.instant.progress
-    - navigation.indexes
+    - navigation.instant
+    - navigation.instant.progress
+    - toc.integrate
     - navigation.sections
     - navigation.path
     - content.code.annotate
@@ -41,7 +43,11 @@ theme:
 plugins:
   - search
   - autorefs
-  - plotly
+  - macros:
+      include_yaml:
+        - streak : docs/loserQ/assets/streak_results.yml
+  - plotly:
+      lib_path: javascripts/plotly-2.32.0.js
   - glightbox:
       auto_caption: false
       caption_position: bottom
