@@ -15,7 +15,7 @@ Your history of games can be simply represented as a sequence of wins and losses
 using Riot's API, I can easily plot it as a curve, as shown below. Behold, the history of `mopz24#EUW` :  
 
 ``` plotly
---8<-- "loserQ/assets/history_single_player.json"
+{"file_path": "loserQ/assets/history_single_player.json"}
 ```
 
 As you can see, this looks like a fancy barcode. But there is no way to tell if anything 
@@ -24,7 +24,7 @@ so that we can learn more about the matchmaking system. A nice thing to do would
 for several players within the same division. 
 
 ``` plotly
---8<-- "loserQ/assets/history_multiple_players.json"
+{"file_path": "loserQ/assets/history_multiple_players.json"}
 ```
 
 This has now become a QRcode where the horizontal lines represent history of games for different players. I'll keep this convention 
@@ -44,17 +44,17 @@ Bigger streak in out sample, some stuff etc.
     <tr>
     <td> 
     ``` plotly
-    --8<-- "loserQ/assets/simulation_0.json"
+    {"file_path": "loserQ/assets/simulation_0.json"}
     ```
     </td>
     <td>
     ``` plotly
-    --8<-- "loserQ/assets/simulation_1.json"
+    {"file_path": "loserQ/assets/simulation_1.json"}
     ```
     </td>
     <td> 
     ``` plotly
-    --8<-- "loserQ/assets/simulation_2.json"
+    {"file_path": "loserQ/assets/simulation_2.json"}
     ```
     </td>
     </tr>
@@ -68,7 +68,7 @@ Bigger streak in out sample, some stuff etc.
 
     <center>
     ``` plotly
-    --8<-- "loserQ/assets/simulation_4.json"
+    {"file_path": "loserQ/assets/simulation_4.json"}
     ```
     </center>
 
@@ -234,7 +234,7 @@ using mock data.
 
 ![Corner_dark](assets/test_summaries_corner_dark.png#only-dark){ data-title="A posteriori distributions for the transition probability" data-description="yeyeyeye" }
 
-## Applying the method to true data 
-Does it work ?
+- Show that this methodology can recover the dynamic in 1) Mock loserQ super exagerated with a DMC 2) Subtle loserQ 
+using another mechanism than DMC  Use probability of winning = sin(T)? 
 
 ## Instantaneous winrate analysis? 

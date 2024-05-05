@@ -5,7 +5,9 @@ site_url: https://renecotyfanboy.github.io/leagueProject/
 nav:
   - Home: index.md
   - Dataset:
-    - dataset/index.md
+    - dataset/introduction.md
+    - dataset/exploration.md
+    - dataset/cookbook.md
   - Around the LoserQ:
     - loserQ/motivation.md
     - loserQ/history.md
@@ -32,9 +34,11 @@ theme:
         icon: material/weather-sunny
         name: Switch to light mode`
   features:
-    - navigation.instant
-    - navigation.instant.progress
-    - toc.integrate
+    #- navigation.instant
+    #- navigation.instant.progress
+    #- navigation.instant.prefetch
+    - navigation.tracking
+    #- toc.integrate
     - navigation.sections
     - navigation.path
     - content.code.annotate
@@ -43,6 +47,7 @@ theme:
 plugins:
   - search
   - autorefs
+  - typeset
   - macros:
       include_yaml:
         - streak : docs/loserQ/assets/streak_results.yml

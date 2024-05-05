@@ -21,9 +21,31 @@ yield the following graph :
 {"file_path": "loserQ/assets/mock_streak_histogram.json"}
 ```
 
-## Hypothesis testing
+As the last time, the real data is consistent with the simulated data, which is hinted by the fact that the real data 
+fall between the $68\%$ confidence interval of the simulated data. This is a good sign that the streak lengths we 
+observe in our dataset are consistent with what you would expect from random coin flips.
 
-This time, I also accounted for the intrinsic spread of this distribution by simulating 100 dataset and plotting 
+## Statistics :nerd:
+
+!!! Quote "Comment from [Matos3001](https://www.reddit.com/r/leagueoflegends/comments/15k2nw4/comment/jvlq50c/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button) on my previous post"
+    [...] while [you] might understand a lot about balls in the sky, [you] are no statistician. [...]
+
+After my first post, I was really surprised by the number of people how disclaimed the results, saying that I was not a
+statistician. 
+C'est vrai que je suis resté en surface, ça manquait le pas entre un simple truc pour s'amuser et des résultats de qualité scientifique.
+While I am perfectly aware and transparent about the bias of the previous and current study, I am still an 
+astrophysicist, and I know a bit about statistics. When doing evidence based science, statistic is the backbone of any 
+solid result you can get. I am no researched in applied statistics, but hell I know how to use a $\chi^2$ test. And I 
+know [how bad it is](https://en.wikipedia.org/wiki/Misuse_of_p-values). An issue when trying to vulgarize scientific result is that most of the people are not aware about 
+what and how you tell "my results are credible". Last time, I focused on visual proofs and I didn't go into the details
+of how significant the results are. But since people are asking for p-values (1), I will provide them with p-values.
+{ .annotate }
+
+1.  In french, we would say that they are "autodiag zét"
+
+
+
+This time, I accounted for the intrinsic spread of this distribution by simulating 100 dataset and plotting 
 the associated $68\%$ confidence interval. The real data is well within this interval, which means that the distribution
 of streak lengths is consistent with what you would expect from random coin flips. We can go a bit further and quantify
 this agreement using a statistical test. To do this, we use the $\chi^2$ statistic. This is a straightforward approach which computes how much the 
@@ -55,7 +77,13 @@ For the whole dataset, we can therefore compute a p-value
 of $\sim {{ streak.p_value_win }}$ for the winning streaks and $\sim {{ streak.p_value_loss }}$ for the losing streaks. This means that the data is
 consistent with the hypothesis that the streak lengths are drawn from the same kind of process we used to make the 
 simulations, which are simply coin flips with a probability of success drawn randomly from the winrate distribution
-in the dataset. Don't get fooled by the small p-values. They are not a measure of the probability of the hypothesis 
+in the dataset. This is a {{ streak.z_score_win }}$\sigma$ and {{ streak.z_score_loss }}$\sigma$ significant result 
+for the winning and losing streaks respectively. To give you an idea, 3$\sigma$ is an acceptable standard in physics, 
+$5\sigma$ is the common threshold for a discovery in particle physics at the CERN, and $5.1\sigma$ is the 
+significance of the first gravitational waves event detected by LIGO.
+
+
+Don't get fooled by the small p-values. They are not a measure of the probability of the hypothesis 
 being true, and have no meaning *per se* except for disclosing obviously wrong hypothesis. I want 
 you to be aware that p-values only make sense if compared with other p-values. In any case, it is promising to see
 that the data is consistent with the hypothesis that the streak lengths are drawn from a random process.

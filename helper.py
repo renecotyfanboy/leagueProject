@@ -1,8 +1,44 @@
 import numpy as np
 import jax.numpy as jnp
+import polars as pl
 from bidict import bidict
 from itertools import product
 from scipy.linalg import eig
+
+
+def get_tier_sorted():
+
+    tier_list = ['IRON', 'BRONZE', 'SILVER', 'GOLD', 'PLATINUM', 'EMERALD', 'DIAMOND', 'MASTER', 'GRANDMASTER',
+                 'CHALLENGER']
+    division_list = ['I', 'II', 'III', 'IV'][::-1]
+    tier_with_sub = []
+
+    for tier in tier_list:
+
+        if tier not in ['MASTER', 'GRANDMASTER', 'CHALLENGER']:
+            for division in division_list:
+                tier_with_sub.append(f'{tier}_{division}')
+
+    return tier_with_sub + ['MASTER', 'GRANDMASTER', 'CHALLENGER']
+
+def get_history_dict(df_path="league_dataframe.csv"):
+
+    columns = ['elo', 'puuid', 'gameStartTimestamp', 'is_in_reference_sample', 'win']
+    df = pl.read_csv(df_path, columns=columns)
+    unique_elo = df.filter(is_in_reference_sample=True)['elo'].unique()
+
+    history = {}
+
+    for elo in unique_elo:
+        loc_df = df.filter(elo=elo, is_in_reference_sample=True)
+        history[elo] = {}
+        unique_puuid = loc_df['puuid'].unique()
+
+        for puuid in unique_puuid:
+            loc_history = loc_df.filter(puuid=puuid)
+            history[elo][puuid] = list(loc_history.sort(by='gameStartTimestamp')['win'])
+
+    return history
 
 
 class StateTools:
