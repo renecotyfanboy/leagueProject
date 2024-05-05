@@ -1,0 +1,12 @@
+numpy 
+matplotlib
+jax
+jaxlib
+numpyro
+tqdm
+plotly
+ipywidgets
+tfp-nightly[jax]
+bidict
+polars
+datasets

@@ -4,6 +4,17 @@ import polars as pl
 from bidict import bidict
 from itertools import product
 from scipy.linalg import eig
+from datasets import load_dataset
+
+
+def get_dataset(select_columns = None):
+    dataset = load_dataset("renecotyfanboy/leagueData", split="train")
+
+    if select_columns is None:
+        dataset.to_polars()
+    
+    return dataset.select_columns(select_columns).to_polars()
+
 
 
 def get_tier_sorted():
@@ -24,7 +35,7 @@ def get_tier_sorted():
 def get_history_dict(df_path="league_dataframe.csv"):
 
     columns = ['elo', 'puuid', 'gameStartTimestamp', 'is_in_reference_sample', 'win']
-    df = pl.read_csv(df_path, columns=columns)
+    df = get_dataset(columns)
     unique_elo = df.filter(is_in_reference_sample=True)['elo'].unique()
 
     history = {}
