@@ -10,3 +10,4 @@ tfp-nightly[jax]
 bidict
 polars
 datasets
+chainconsumer

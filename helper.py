@@ -1,6 +1,8 @@
 import numpy as np
 import jax.numpy as jnp
 import polars as pl
+from tensorflow_probability.substrates.jax import distributions as tfd
+from jax.random import PRNGKey
 from bidict import bidict
 from itertools import product
 from scipy.linalg import eig
