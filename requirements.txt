@@ -11,3 +11,4 @@ bidict
 polars
 datasets
 chainconsumer
+arviz

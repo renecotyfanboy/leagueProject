@@ -49,7 +49,7 @@ def get_history_dict(df_path="league_dataframe.csv"):
 
         for puuid in unique_puuid:
             loc_history = loc_df.filter(puuid=puuid)
-            history[elo][puuid] = list(loc_history.sort(by='gameStartTimestamp')['win'])
+            history[elo][puuid] = np.asarray(loc_history.sort(by='gameStartTimestamp')['win'])
 
     return history
 
