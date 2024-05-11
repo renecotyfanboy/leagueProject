@@ -1,7 +1,6 @@
 numpy 
 matplotlib
-jax
-jaxlib
+jax[cuda12]
 numpyro
 tqdm
 plotly
