@@ -1,4 +1,5 @@
 import polars as pl
+import numpy as np
 from datasets import load_dataset
 
 
@@ -41,3 +42,27 @@ def get_tier_sorted() -> list:
                 tier_with_sub.append(f'{tier}_{division}')
 
     return tier_with_sub + ['MASTER', 'GRANDMASTER', 'CHALLENGER']
+
+
+def get_history_dict():
+    """
+    Return a two level dictionary containing the history of all players in the reference sample.
+    Accessed by elo and then by puuid.
+    """
+
+    columns = ['elo', 'puuid', 'gameStartTimestamp', 'is_in_reference_sample', 'win']
+    df = get_dataset(columns)
+    unique_elo = df.filter(is_in_reference_sample=True)['elo'].unique()
+
+    history = {}
+
+    for elo in unique_elo:
+        loc_df = df.filter(elo=elo, is_in_reference_sample=True)
+        history[elo] = {}
+        unique_puuid = loc_df['puuid'].unique()
+
+        for puuid in unique_puuid:
+            loc_history = loc_df.filter(puuid=puuid)
+            history[elo][puuid] = np.asarray(loc_history.sort(by='gameStartTimestamp')['win'])
+
+    return history

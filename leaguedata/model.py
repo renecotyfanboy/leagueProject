@@ -1,5 +1,8 @@
+import jax.random
 import numpy as np
 import jax.numpy as jnp
+import numpyro.distributions as dist
+from jax.random import PRNGKey
 from tensorflow_probability.substrates.jax import distributions as tfd
 from bidict import bidict
 from itertools import product
@@ -183,3 +186,82 @@ class DMCModel:
                     graph_str += line_str + '\n'
 
         return graph_str
+
+
+def generate_obvious_loser_q(number_of_games=85, number_of_players=200, key=PRNGKey(42)):
+    """
+    Generate mock history of players using the obvious loserQ model.
+
+    Parameters:
+        number_of_games (int): The number of games in the mock history.
+        number_of_players (int): The number of players.
+        key (PRNGKey): The key to generate the mock history.
+    """
+
+    markov_util_ref = DMCModel(4)
+
+    probs = jnp.empty((2 ** 4))
+    probs_keys = {0.: 0.25, 0.25: 1 / 3, 0.5: 0.5, 0.75: 2 / 3, 1.: 0.75}
+
+    for i, state in enumerate(markov_util_ref.get_states()):
+        probs = probs.at[i].set(probs_keys[sum(state) / 4])
+
+    mock_history_encoded = markov_util_ref.build_process(number_of_games - 3, probs=probs).sample(number_of_players, seed=key)
+    mock_history = np.apply_along_axis(markov_util_ref.categorical_serie_to_binary, 1, mock_history_encoded)
+
+    return mock_history
+
+
+def generate_coinflip_history(number_of_games=85, number_of_players=200, key=PRNGKey(42)):
+    """
+    Generate mock history of players using the coinflip model.
+
+    Parameters:
+        number_of_games (int): The number of games in the mock history.
+        number_of_players (int): The number of players.
+        key (PRNGKey): The key to generate the mock history.
+    """
+
+    return np.asarray(jax.random.bernoulli(key, 0.5, shape=(number_of_players, number_of_games)))
+
+
+def generate_nasty_loser_q(number_of_games=85, number_of_players=200, key=PRNGKey(42), return_importance=False):
+    """
+    Generate mock history of players using the nasty loserQ model.
+
+    Parameters:
+        number_of_games (int): The number of games in the mock history.
+        number_of_players (int): The number of players.
+        key (PRNGKey): The key to generate the mock history.
+        return_importance (bool): Whether to return the importance of the loserQ for each player.
+    """
+    markov = DMCModel(4)
+    keys = jax.random.split(key, 2)
+
+    importance = dist.Beta(1.2, 10).sample(keys[0], sample_shape=(number_of_players,))
+
+    def single_history(key, importance, number_of_games):
+        probs = jnp.empty((2 ** 4))
+
+        probs_keys = {0.: 0.5 - 0.375 * importance,
+                      0.25: 0.5 - 0.125 * importance,
+                      0.5: 0.5,
+                      0.75: 0.5 + 0.125 * importance,
+                      1.: 0.5 + 0.375 * importance}
+
+        for i, state in enumerate(markov.get_states()):
+            probs = probs.at[i].set(probs_keys[sum(state) / 4])
+
+        return markov.build_process(number_of_games -3, probs=probs).sample(1, seed=key)[0]
+
+    keys = jax.random.split(keys[1], number_of_players)
+    history_categorical = np.asarray(
+        jax.vmap(lambda key, importance: single_history(key, importance, number_of_games)
+                 )(keys, importance))
+
+    history = np.apply_along_axis(markov.categorical_serie_to_binary, 1, history_categorical)
+
+    if return_importance:
+        return history, importance
+
+    return history

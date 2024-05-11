@@ -18,7 +18,9 @@ nav:
   - Around trueskill2:
     - trueskill2/introduction.md
   - Reference:
-    - model : api/reference.md
+    - data : api/data.md
+    - model : api/model.md
+    - inference : api/inference.md
 
 
 
