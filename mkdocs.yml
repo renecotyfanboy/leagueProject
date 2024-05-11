@@ -10,10 +10,17 @@ nav:
     - dataset/cookbook.md
   - Around the LoserQ:
     - loserQ/motivation.md
-    - loserQ/history.md
+    - loserQ/model.md
+    - loserQ/validation.md
     - loserQ/distribution.md
     - loserQ/autocorrelation.md
     - loserQ/conclusion.md
+  - Around trueskill2:
+    - trueskill2/introduction.md
+  - Reference:
+    - model : api/reference.md
+
+
 
 theme:
   name: material
@@ -43,6 +50,7 @@ theme:
     - navigation.path
     - content.code.annotate
     - content.code.copy
+    - content.tooltips
 
 plugins:
   - search
@@ -56,10 +64,22 @@ plugins:
   - glightbox:
       auto_caption: false
       caption_position: bottom
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            members_order: alphabetical
+            docstring_section_style: spacy
+            docstring_style: google
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            modernize_annotations: true
 
 use_directory_urls: true
 
 markdown_extensions:
+  - abbr
   - attr_list
   - tables
   - md_in_html
@@ -74,8 +94,7 @@ markdown_extensions:
       line_spans: __span
       pygments_lang_class: true
   - pymdownx.inlinehilite
-  - pymdownx.snippets:
-      base_path: [ 'docs' ]
+  - pymdownx.snippets
   - pymdownx.superfences:
       custom_fences:
         - name: plotly

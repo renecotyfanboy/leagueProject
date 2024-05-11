@@ -1,75 +1,50 @@
 import numpy as np
 import jax.numpy as jnp
-import polars as pl
 from tensorflow_probability.substrates.jax import distributions as tfd
-from jax.random import PRNGKey
 from bidict import bidict
 from itertools import product
 from scipy.linalg import eig
-from datasets import load_dataset
 
 
-def get_dataset(select_columns = None):
-    dataset = load_dataset("renecotyfanboy/leagueData", split="train")
-
-    if select_columns is None:
-        dataset.to_polars()
-    
-    return dataset.select_columns(select_columns).to_polars()
-
-
-
-def get_tier_sorted():
-
-    tier_list = ['IRON', 'BRONZE', 'SILVER', 'GOLD', 'PLATINUM', 'EMERALD', 'DIAMOND', 'MASTER', 'GRANDMASTER',
-                 'CHALLENGER']
-    division_list = ['I', 'II', 'III', 'IV'][::-1]
-    tier_with_sub = []
-
-    for tier in tier_list:
-
-        if tier not in ['MASTER', 'GRANDMASTER', 'CHALLENGER']:
-            for division in division_list:
-                tier_with_sub.append(f'{tier}_{division}')
-
-    return tier_with_sub + ['MASTER', 'GRANDMASTER', 'CHALLENGER']
-
-def get_history_dict(df_path="league_dataframe.csv"):
-
-    columns = ['elo', 'puuid', 'gameStartTimestamp', 'is_in_reference_sample', 'win']
-    df = get_dataset(columns)
-    unique_elo = df.filter(is_in_reference_sample=True)['elo'].unique()
-
-    history = {}
-
-    for elo in unique_elo:
-        loc_df = df.filter(elo=elo, is_in_reference_sample=True)
-        history[elo] = {}
-        unique_puuid = loc_df['puuid'].unique()
-
-        for puuid in unique_puuid:
-            loc_history = loc_df.filter(puuid=puuid)
-            history[elo][puuid] = np.asarray(loc_history.sort(by='gameStartTimestamp')['win'])
-
-    return history
-
-
-class StateTools:
+class DMCModel:
+    """
+    Class used to define a Discrete Markov Chain for modelling game history.
+    """
 
     def __init__(self, n):
+        """
+        Build a Discrete Markov Chain model.
+
+        Parameters:
+            n (int): The number of game in memory. If n = 0, the model is a Bernoulli process.
+        """
         self.is_bernoulli = n == 0
         self.n = max(n, 1)
 
     @property
     def ref_table(self):
-        """Generates an iterator over all binary tuples of size n."""
+        """
+        Mapping between binary and categorical representation of states.
+        """
         return bidict({state: i for i, state in enumerate(product([0, 1], repeat=self.n))})
 
     @property
     def uniform_prior(self):
+        """
+        Define a uniform prior over the states.
+
+        Returns:
+            jnp.array: The uniform prior.
+        """
         return jnp.ones((2 ** self.n,)) / 2 ** self.n
 
     def get_states(self):
+        """
+        Get all the states of the model, which are the combinations of n binary values.
+
+        Returns:
+            list: The list of all states.
+        """
 
         states = []
 
@@ -79,6 +54,15 @@ class StateTools:
         return states
 
     def build_transition_matrix(self, probs):
+        """
+        Build the transition matrix of the model.
+
+        Parameters:
+            probs (jnp.array): The probabilities of winning at each state.
+
+        Returns:
+            jnp.array: The transition matrix.
+        """
 
         transition_matrix = jnp.zeros((2 ** self.n, 2 ** self.n))
 
@@ -93,6 +77,15 @@ class StateTools:
         return transition_matrix
 
     def binary_serie_to_categorical(self, serie):
+        """
+        Convert a binary representation of states to a categorical representation.
+
+        Parameters:
+            serie (np.array): The binary serie to convert.
+
+        Returns:
+            np.array: The categorical serie.
+        """
 
         new_serie = np.empty((len(serie) - self.n + 1), dtype=int)
 
@@ -103,6 +96,15 @@ class StateTools:
         return new_serie
 
     def categorical_serie_to_binary(self, serie):
+        """
+        Convert a categorical representation of states to a binary representation.
+
+        Parameters:
+            serie (np.array): The categorical serie to convert.
+
+        Returns:
+            np.array: The binary serie.
+        """
 
         new_serie = np.empty((len(serie) + self.n - 1), dtype=int)
 
@@ -112,6 +114,16 @@ class StateTools:
         return new_serie
 
     def build_process(self, steps, probs=None):
+        """
+        Build a Markov Chain process with the given number of steps.
+
+        Parameters:
+            steps (int): The number of steps of the process.
+            probs (jnp.array): The probabilities of winning at each state.
+
+        Returns:
+            tfd.MarkovChain: The Markov Chain process.
+        """
 
         if probs is None:
             transition_matrix = self.build_transition_matrix(jnp.ones(2 ** self.n) * 0.5)
@@ -130,12 +142,31 @@ class StateTools:
         )
 
     def stationary_distribution(self, probs):
+        """
+        Compute the stationary distribution of the model.
+
+        Parameters:
+            probs (jnp.array): The probabilities of winning at each state.
+
+        Returns:
+            jnp.array: The stationary distribution.
+        """
+
         transition_matrix = self.build_transition_matrix(probs)
         eig_val, eig_ref = eig(transition_matrix, left=True, right=False)
         stat_distribution = eig_ref[:, np.argwhere(np.isclose(eig_val, 1))[0]]
         return np.abs(stat_distribution / stat_distribution.sum())
 
     def to_mermaid(self, probs):
+        """
+        Convert the model to a Mermaid graph.
+
+        Parameters:
+            probs (jnp.array): The probabilities of winning at each state.
+
+        Returns:
+            str: The Mermaid graph.
+        """
 
         transition_matrix = self.build_transition_matrix(probs)
         states = self.get_states()
