@@ -45,8 +45,8 @@ def fit_history_with_dmc(
     lowest_memory=0, 
     highest_memory=6, 
     num_warmup=1000, 
-    num_samples=2000, 
-    num_chains=5,
+    num_samples=1000, 
+    num_chains=10,
     key=PRNGKey(0),
     assert_convergence=True
     ):
