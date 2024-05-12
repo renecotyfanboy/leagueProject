@@ -201,7 +201,15 @@ def generate_obvious_loser_q(number_of_games=85, number_of_players=200, key=PRNG
     markov_util_ref = DTMCModel(4)
 
     probs = jnp.empty((2 ** 4))
-    probs_keys = {0.: 0.25, 0.25: 1 / 3, 0.5: 0.5, 0.75: 2 / 3, 1.: 0.75}
+    importance = 0.5
+
+    probs_keys = {
+        0.: 0.5 - 0.375 * importance,
+        0.25: 0.5 - 0.125 * importance,
+        0.5: 0.5,
+        0.75: 0.5 + 0.125 * importance,
+        1.: 0.5 + 0.375 * importance
+    }
 
     for i, state in enumerate(markov_util_ref.get_states()):
         probs = probs.at[i].set(probs_keys[sum(state) / 4])
