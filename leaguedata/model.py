@@ -9,9 +9,9 @@ from itertools import product
 from scipy.linalg import eig
 
 
-class DMCModel:
+class DTMCModel:
     """
-    Class used to define a Discrete Markov Chain for modelling game history.
+    Class used to define a Discrete Time Markov Chain for modelling game history.
     """
 
     def __init__(self, n):
@@ -198,7 +198,7 @@ def generate_obvious_loser_q(number_of_games=85, number_of_players=200, key=PRNG
         key (PRNGKey): The key to generate the mock history.
     """
 
-    markov_util_ref = DMCModel(4)
+    markov_util_ref = DTMCModel(4)
 
     probs = jnp.empty((2 ** 4))
     probs_keys = {0.: 0.25, 0.25: 1 / 3, 0.5: 0.5, 0.75: 2 / 3, 1.: 0.75}
@@ -235,7 +235,7 @@ def generate_nasty_loser_q(number_of_games=85, number_of_players=200, key=PRNGKe
         key (PRNGKey): The key to generate the mock history.
         return_importance (bool): Whether to return the importance of the loserQ for each player.
     """
-    markov = DMCModel(4)
+    markov = DTMCModel(4)
     keys = jax.random.split(key, 2)
 
     importance = dist.Beta(1.2, 10).sample(keys[0], sample_shape=(number_of_players,))

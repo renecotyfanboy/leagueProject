@@ -4,7 +4,7 @@ import numpyro.distributions as dist
 import jax.numpy as jnp
 import numpy as np
 import tensorflow_probability.substrates.jax.distributions as tfd
-from .model import DMCModel
+from .model import DTMCModel
 from numpyro.infer import MCMC, NUTS
 from jax.random import PRNGKey, fold_in
 
@@ -14,7 +14,7 @@ def numpyro_model(markov_model, observed_data):
     Function that is used as a model in NumPyro to perform inference on the Discrete Markov Chain model.
 
     Parameters:
-        markov_model (DMCModel): The Discrete Markov Chain model to use.
+        markov_model (DTMCModel): The Discrete Markov Chain model to use.
         observed_data (jnp.array): The observed data to use for inference.
     """
 
@@ -55,7 +55,7 @@ def fit_history_with_dmc(
 
     for i in range(highest_memory, lowest_memory - 1, -1):
     
-        markov_util = DMCModel(i)
+        markov_util = DTMCModel(i)
         kernel = NUTS(numpyro_model)
         mcmc = MCMC(
             kernel, 

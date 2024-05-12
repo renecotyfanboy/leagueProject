@@ -12,6 +12,10 @@ patterns while some would be cursed by long streaks of wins and losses.
 
 === "Pure coin flips"
 
+    ``` plotly
+    {"file_path": "loserQ/assets/validation_coinflip.json"}
+    ```
+
     To generate mock history of players in this case, we simply flip a coin with a $50\%$ chance of winning.
     This is instantaneous using the following code :
 
@@ -21,6 +25,10 @@ patterns while some would be cursed by long streaks of wins and losses.
     ```
 
 === "Obvious LoserQ"
+
+    ``` plotly
+    {"file_path": "loserQ/assets/validation_obvious.json"}
+    ```
 
     I propose to generate an obvious LoserQ mechanism using the following logic. 
     The probability of winning the next game is linked to the winrate of the four previous games, the values are 
@@ -35,6 +43,10 @@ patterns while some would be cursed by long streaks of wins and losses.
     | $100\%$                         | $75\%$                           |
 
 === "Nasty LoserQ"
+
+    ``` plotly
+    {"file_path": "loserQ/assets/validation_nasty.json"}
+    ```
 
     The probability of winning the next game is linked to the winrate of the four previous games, but in this situation, 
     a random variable is drawn from a given distribution to describe how much this player would be affected by the 
