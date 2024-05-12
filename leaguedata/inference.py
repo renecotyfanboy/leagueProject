@@ -1,8 +1,12 @@
+import arviz as az
 import numpyro
 import numpyro.distributions as dist
 import jax.numpy as jnp
 import numpy as np
 import tensorflow_probability.substrates.jax.distributions as tfd
+from .model import DMCModel
+from numpyro.infer import MCMC, NUTS
+from jax.random import PRNGKey, fold_in
 
 
 def numpyro_model(markov_model, observed_data):
@@ -34,3 +38,38 @@ def numpyro_model(markov_model, observed_data):
     )
 
     numpyro.sample('likelihood', likelihood_dist, obs=encoded_history)
+
+
+def fit_history_with_dmc(
+    history, 
+    lowest_memory=0, 
+    highest_memory=6, 
+    num_warmup=1000, 
+    num_samples=2000, 
+    num_chains=5,
+    key=PRNGKey(0),
+    assert_convergence=True
+    ):
+
+    dict_of_id = {}
+
+    for i in range(highest_memory, lowest_memory - 1, -1):
+    
+        markov_util = DMCModel(i)
+        kernel = NUTS(numpyro_model)
+        mcmc = MCMC(
+            kernel, 
+            num_warmup=num_warmup, 
+            num_samples=num_samples, 
+            num_chains=num_chains, 
+            chain_method='vectorized'
+        )
+        
+        mcmc.run(fold_in(key, i), markov_util, history)
+        
+        dict_of_id[f'{i} games'] = az.from_numpyro(mcmc)
+
+        if assert_convergence:
+            assert np.all(az.rhat(dict_of_id[f'{i} games'])<1.01)
+
+    return dict_of_id
