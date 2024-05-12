@@ -21,6 +21,7 @@ nav:
     - data : api/data.md
     - model : api/model.md
     - inference : api/inference.md
+    - plot : api/plot.md
 
 
 
