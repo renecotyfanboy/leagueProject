@@ -55,4 +55,6 @@ a sequence of games where the outcome of a game depends on the previous game onl
 
 The envelope of the previous graph represents the spread on this measure due to computing this auto-correlation for a 
 set of individual game histories. This auto-correlation varies from one player to another, and this envelopes gives us
-an idea of how much this quantity varies. 
+an idea of how much this quantity varies.
+
+## Instantaneous winrate analysis? 

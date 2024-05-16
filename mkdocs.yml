@@ -48,6 +48,7 @@ theme:
     #- navigation.instant.progress
     #- navigation.instant.prefetch
     - navigation.tracking
+    - content.footnote.tooltips
     #- toc.integrate
     - navigation.sections
     - navigation.path
@@ -87,6 +88,7 @@ markdown_extensions:
   - tables
   - md_in_html
   - meta
+  - footnotes
   - admonition
   - pymdownx.details
   - pymdownx.keys

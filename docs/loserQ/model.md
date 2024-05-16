@@ -1,3 +1,8 @@
+!!! abstract "TL;DR"
+    - LoserQ should have a measurable impact on the history of games of players. 
+    - As people would lose more right after losing, we should see clear deviation from randomness in the series.
+    - Such a mechanism can be modeled using DTMC, where the present outcome depends on the previous games.
+
 # Modeling the history
 
 Imagine that a mechanism is acting on the matchmaking, such that the matches 
@@ -223,18 +228,7 @@ model for the following reasons :
 - It is **flexible**. You can easily change the number of previous games to consider, and the probabilities associated
   with each state. This is very useful when you want to investigate different hypothesis about the matchmaking system.
 
-
-
-## Validation of the methodology
-
-We test the methodology on LoserQ-like **simulated** data. I show that we can recover the good parameters of the model
-using mock data.
-
-![Corner light](assets/test_summaries_corner.png#only-light){ data-title="A posteriori distributions for the transition probability" data-description="yeyeyeye" }
-
-![Corner_dark](assets/test_summaries_corner_dark.png#only-dark){ data-title="A posteriori distributions for the transition probability" data-description="yeyeyeye" }
-
-- Show that this methodology can recover the dynamic in 1) Mock loserQ super exagerated with a DMC 2) Subtle loserQ 
-using another mechanism than DMC  Use probability of winning = sin(T)? 
-
-## Instantaneous winrate analysis? 
+*[DTMC]: Discrete-time Markov Chain
+*[MCMC]: Markov Chain Monte Carlo
+*[NUTS]: No-U-Turn Sampler
+*[ELDP]: Expected log pointwise predictive density
