@@ -12,8 +12,7 @@ nav:
     - loserQ/motivation.md
     - loserQ/model.md
     - loserQ/validation.md
-    - loserQ/distribution.md
-    - loserQ/autocorrelation.md
+    - loserQ/true_data.md
     - loserQ/conclusion.md
   - Around trueskill2:
     - trueskill2/introduction.md
@@ -65,6 +64,8 @@ plugins:
         - streak : docs/loserQ/assets/streak_results.yml
   - plotly:
       lib_path: javascripts/plotly-2.32.0.js
+      #template_default: plotly
+      #template_slate: plotly_dark
   - glightbox:
       auto_caption: false
       caption_position: bottom

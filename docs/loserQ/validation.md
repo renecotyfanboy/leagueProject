@@ -74,6 +74,46 @@ where $I$ is drawn from a $\beta$ random variable $\alpha = 1.2$ and $\beta=10$.
     {"file_path": "loserQ/assets/validation_nasty.json"}
     ```
 
+??? question annotate
+    Can you distinguish a true player history compared to simulated ones ? Solution : (1)
+    <table>
+    <tr>
+    <td> <center> History n°1  </center> </td>
+    <td> <center> History n°2  </center> </td>
+    <td> <center> History n°3  </center> </td>
+    </tr>
+    <tr>
+    <td> 
+    ``` plotly
+    {"file_path": "loserQ/assets/simulation_0.json"}
+    ```
+    </td>
+    <td>
+    ``` plotly
+    {"file_path": "loserQ/assets/simulation_1.json"}
+    ```
+    </td>
+    <td> 
+    ``` plotly
+    {"file_path": "loserQ/assets/simulation_2.json"}
+    ```
+    </td>
+    </tr>
+    </table>
+
+
+1.  All are simulated. The one below is not. It is sampled from summoners in Emerald I. Or is it ? (1)
+    { .annotate }
+    1.  It is. I swear. Prankex free.
+    <div class="tenor-gif-embed" data-postid="27578414" data-share-method="host" data-aspect-ratio="1" data-width="50%"><a href="https://tenor.com/view/prankex-gif-27578414">Prankex Sticker</a>from <a href="https://tenor.com/search/prankex-stickers">Prankex Stickers</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+
+    <center>
+    ``` plotly
+    {"file_path": "loserQ/assets/simulation_4.json"}
+    ```
+    </center>
+
+
 ## How do we validate the methodology?
 
 So, the whole idea would be to recover the underlying dynamics from a given set of history of games. To do this, my take 

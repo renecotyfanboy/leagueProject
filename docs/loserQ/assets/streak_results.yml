@@ -1,6 +1,6 @@
-chi2loss: 282.90137
-chi2win: 272.25946
-p_value_loss: 0.0
-p_value_win: 0.0
-z_score_loss: -14.7
-z_score_win: -14.4
+chi2loss: 15.0956
+chi2win: 20.05961
+p_value_loss: 0.6553925
+p_value_win: 0.3294736
+z_score_loss: 0.4
+z_score_win: -0.4

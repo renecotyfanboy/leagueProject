@@ -273,3 +273,45 @@ def generate_nasty_loser_q(number_of_games=85, number_of_players=200, key=PRNGKe
         return history, importance
 
     return history
+
+
+def generate_simulation(number_of_games=85, number_of_players=200, key=PRNGKey(42), return_importance=False):
+    """
+    Generate mock history of players using the nasty loserQ model.
+
+    Parameters:
+        number_of_games (int): The number of games in the mock history.
+        number_of_players (int): The number of players.
+        key (PRNGKey): The key to generate the mock history.
+        return_importance (bool): Whether to return the importance of the loserQ for each player.
+    """
+    markov = DTMCModel(4)
+    keys = jax.random.split(key, 2)
+
+    importance = dist.Beta(1.2, 10).sample(keys[0], sample_shape=(number_of_players,))
+
+    def single_history(key, importance, number_of_games):
+        probs = jnp.empty((2 ** 4))
+
+        probs_keys = {0.: 0.5 - 0.375 * importance,
+                      0.25: 0.5 - 0.125 * importance,
+                      0.5: 0.5,
+                      0.75: 0.5 + 0.125 * importance,
+                      1.: 0.5 + 0.375 * importance}
+
+        for i, state in enumerate(markov.get_states()):
+            probs = probs.at[i].set(probs_keys[sum(state) / 4])
+
+        return markov.build_process(number_of_games -3, probs=probs).sample(1, seed=key)[0]
+
+    keys = jax.random.split(keys[1], number_of_players)
+    history_categorical = np.asarray(
+        jax.vmap(lambda key, importance: single_history(key, importance, number_of_games)
+                 )(keys, importance))
+
+    history = np.apply_along_axis(markov.categorical_serie_to_binary, 1, history_categorical)
+
+    if return_importance:
+        return history, importance
+
+    return history
