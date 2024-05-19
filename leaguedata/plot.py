@@ -73,6 +73,10 @@ def plot_compare_plotly(comp_df, save_to=None):
         "ls_min_ic": "dash",
         "color_ls_min_ic": "grey"
     }
+
+    color_criterion = 'rgba(0,176,246,1.)'
+    color_difference = 'rgba(231,107,243,1.)'
+    
     linewidth = 2
     information_criterion = 'elpd_loo'
 
@@ -83,24 +87,47 @@ def plot_compare_plotly(comp_df, save_to=None):
     # Create the figure
     fig = go.Figure()
 
+    # Add the ELPD difference error bars
+    fig.add_trace(go.Scatter(
+        x=comp_df[information_criterion].iloc[1:],
+        y=yticks_pos[1:] + 0.6,
+        error_x=dict(
+            type='data', 
+            array=comp_df['dse'][1:], 
+            thickness=linewidth
+        ),
+        mode='markers+text',
+        marker=dict(
+            color=color_difference, 
+            symbol=plot_kwargs["marker_dse"], 
+            size=10,
+            line=dict(
+                width=linewidth
+            )
+        ),
+        name="ELPD difference"
+    ))
+
     # Add the ELPD error bars
     fig.add_trace(go.Scatter(
         x=comp_df[information_criterion],
         y=yticks_pos,
-        error_x=dict(type='data', array=comp_df['se'], thickness=linewidth),
+        error_x=dict(
+            type='data', 
+            array=comp_df['se'], 
+            thickness=linewidth
+        ),
         mode='markers+text',
-        marker=dict(color=plot_kwargs["color_ic"], symbol=plot_kwargs["marker_ic"], size=10, line=dict(color=plot_kwargs["marker_fc"], width=linewidth)),
+        marker=dict(
+            color=color_criterion, 
+            symbol=plot_kwargs["marker_ic"], 
+            size=10, 
+            line=dict(
+                #color=plot_kwargs["marker_fc"], 
+                width=linewidth
+            )
+        ),
         name="ELPD"
-    ))
-
-    # Add the ELPD difference error bars
-    fig.add_trace(go.Scatter(
-        x=comp_df[information_criterion].iloc[1:],
-        y=yticks_pos[1:] - 0.3,
-        error_x=dict(type='data', array=comp_df['dse'][1:], thickness=linewidth),
-        mode='markers+text',
-        marker=dict(color=plot_kwargs["color_dse"], symbol=plot_kwargs["marker_dse"], size=10),
-        name="ELPD difference"
     ))
 
     # Add a vertical line
@@ -109,6 +136,8 @@ def plot_compare_plotly(comp_df, save_to=None):
         line=dict(color=plot_kwargs["color_ls_min_ic"], width=linewidth, dash=plot_kwargs["ls_min_ic"]),
     )
 
+    fig.update_xaxes(showgrid=True, minor=dict(showgrid=True))
+    fig.update_yaxes(showgrid=True, minor=dict(showgrid=True))
     # Update axes properties
     fig.update_layout(
         xaxis_title='log(ELPD LOO) [higher is better]',
@@ -118,7 +147,8 @@ def plot_compare_plotly(comp_df, save_to=None):
             tickvals=yticks_pos,
             ticktext=labels
         ),
-        width=500, height=400,
+        margin=dict(l=20, r=20, t=20, b=20),
+        width=400, height=300,
         yaxis_autorange='reversed',
         legend=dict(
             orientation="h",
