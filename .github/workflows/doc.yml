@@ -31,7 +31,7 @@ jobs:
       - run: pip install mkdocs-autorefs
       - run: pip install mkdocs-glightbox
       - run: pip install mkdocs-macros-plugin
-      - run: pip install mkdocstrings
+      - run: pip install mkdocstrings[python]
       - run: mkdocs gh-deploy --force
 env:
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
