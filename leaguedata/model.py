@@ -133,8 +133,6 @@ class DTMCModel:
         else:
             transition_matrix = self.build_transition_matrix(probs)
 
-        # win_prob = numpyro.sample(f"{state_i}_to_win", dist.Uniform(0, 1))
-
         def transition_fn(_, x):
             return tfd.Categorical(probs=transition_matrix[x])
 
@@ -275,43 +273,27 @@ def generate_nasty_loser_q(number_of_games=85, number_of_players=200, key=PRNGKe
     return history
 
 
-def generate_simulation(number_of_games=85, number_of_players=200, key=PRNGKey(42), return_importance=False):
-    """
-    Generate mock history of players using the nasty loserQ model.
+def generate_simulation_from_best_fit(number_of_games=85, number_of_players=200, key=PRNGKey(42)):
 
-    Parameters:
-        number_of_games (int): The number of games in the mock history.
-        number_of_players (int): The number of players.
-        key (PRNGKey): The key to generate the mock history.
-        return_importance (bool): Whether to return the importance of the loserQ for each player.
-    """
-    markov = DTMCModel(4)
+    markov = DTMCModel(1)
     keys = jax.random.split(key, 2)
 
-    importance = dist.Beta(1.2, 10).sample(keys[0], sample_shape=(number_of_players,))
+    win_from_loss = np.random.normal(49.81/100, 0.14/100, size=number_of_players)
+    win_from_win = np.random.normal(50.54/100, 0.14/100, size=number_of_players)
 
-    def single_history(key, importance, number_of_games):
-        probs = jnp.empty((2 ** 4))
+    def single_history(key, win_from_loss, win_from_win, number_of_games):
+        probs = jnp.empty((2,))
 
-        probs_keys = {0.: 0.5 - 0.375 * importance,
-                      0.25: 0.5 - 0.125 * importance,
-                      0.5: 0.5,
-                      0.75: 0.5 + 0.125 * importance,
-                      1.: 0.5 + 0.375 * importance}
+        probs = probs.at[0].set(win_from_loss)
+        probs = probs.at[1].set(win_from_win)
 
-        for i, state in enumerate(markov.get_states()):
-            probs = probs.at[i].set(probs_keys[sum(state) / 4])
-
-        return markov.build_process(number_of_games -3, probs=probs).sample(1, seed=key)[0]
+        return markov.build_process(number_of_games, probs=probs).sample(1, seed=key)[0]
 
     keys = jax.random.split(keys[1], number_of_players)
     history_categorical = np.asarray(
-        jax.vmap(lambda key, importance: single_history(key, importance, number_of_games)
-                 )(keys, importance))
+        jax.vmap(jax.jit(lambda key, wfl, wfw: single_history(key, wfl, wfw, number_of_games))
+                 )(keys, win_from_loss, win_from_win))
 
     history = np.apply_along_axis(markov.categorical_serie_to_binary, 1, history_categorical)
-
-    if return_importance:
-        return history, importance
 
     return history

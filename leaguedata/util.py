@@ -34,5 +34,5 @@ def find_streaks(array):
         return (win_streaks, loss_streaks, previous, current_length), None 
 
     (win_streaks, loss_streaks, previous, current_length), _ = lax.scan(body_fn, (win_streaks, loss_streaks, previous, current_length), array)
-    
+
     return win_streaks, loss_streaks
