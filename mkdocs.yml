@@ -6,7 +6,6 @@ nav:
   - Home: index.md
   - Dataset:
     - dataset/introduction.md
-    - dataset/exploration.md
     - dataset/cookbook.md
   - Around the LoserQ:
     - loserQ/motivation.md
@@ -64,8 +63,7 @@ plugins:
         - streak : docs/loserQ/assets/streak_results.yml
   - plotly:
       lib_path: javascripts/plotly-2.32.0.js
-      #template_default: plotly
-      #template_slate: plotly_dark
+      template_slate: plotly_dark
   - glightbox:
       auto_caption: false
       caption_position: bottom

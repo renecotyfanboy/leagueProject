@@ -38,5 +38,15 @@
 }
 
 .twitter-tweet iframe {
-  color-scheme: light;
+    color-scheme: light;
+}
+
+.mkdocs-plotly.js-plotly-plot {
+    display: flex;
+    justify-content: center;
+}
+
+.center {
+    display: block;
+    margin: 0 auto;
 }

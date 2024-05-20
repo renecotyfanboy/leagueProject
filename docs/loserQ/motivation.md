@@ -66,6 +66,10 @@ We&#39;re not intentionally putting bad players on your team to make you lose mo
 
 ## Why did I redo the analysis?
 
+First analysis was a 4Fun stuff I did during my manuscript writing in a day. 
+I do not know convincing analysis that prove the existence of loserQ, all I read 
+was either irreproducible, erroneous or anectodical. 
+
 The main concern I was facing is that I only focused on Master+ players, and
 this is not necessarily representative of the whole player base. Moreover, I didn't go deep in the details of the 
 methodology I used, and maybe was too quick on some points. Therefore, I decided to collect a cleaner dataset and redo 
@@ -76,7 +80,8 @@ The idea was to investigate the existence of a "Loser Queue" in League of Legend
 
 RIOT is cheating with the fairness -> investigate history of games -> prove that losers queue exists
 RIOT is matching you with filled people or bad players -> investigate the performance of players
-
+I want to make an analysis which is paper-worthy, and that would be a good starting point for a publication.
+I must be well documented, peer-validated and reproducible. 
 
 
 [^1]: [**EOMM: An Engagement Optimized Matchmaking
