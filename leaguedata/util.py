@@ -6,7 +6,7 @@ from jax import lax
 @jax.jit
 def find_streaks(array):
     
-    array = jnp.asarray(array, dtype=jnp.bool)
+    array = jnp.asarray(array, dtype=bool)
     win_streaks = jnp.zeros_like(array, dtype=jnp.int32)
     loss_streaks = jnp.zeros_like(array, dtype=jnp.int32)
     previous = ~array[0]
