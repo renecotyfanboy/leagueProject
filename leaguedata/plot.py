@@ -41,7 +41,7 @@ def plot_history(matrix, name=None, lane=None, kda=None, start=None, save_to=Non
             showticklabels=False
         ),
         margin=dict(l=20, r=20, t=20, b=20),
-        width=700, height=800 / 3,
+        width=600, height=800 / 3,
         xaxis_title=f'History of {matrix.shape[1]} games',
     )
 

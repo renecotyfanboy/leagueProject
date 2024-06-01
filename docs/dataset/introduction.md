@@ -1,4 +1,4 @@
-# Introduction
+# Description
 
 This section is dedicated to the dataset used in the project. It is available 
 [on HuggingFace](https://huggingface.co/datasets/renecotyfanboy/leagueData)

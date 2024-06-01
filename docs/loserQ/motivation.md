@@ -1,9 +1,11 @@
-# Motivations
+# Why do I even bother ?
 
 Back in summer 2023, I posted on reddit [some hints](https://www.reddit.com/r/leagueoflegends/comments/15k2nw4/existence_of_loser_queue_a_statistical_analysis/). 
 showing that there were probably no LoserQ mechanism in League of Legends. This post was well received, and I got a lot 
 of feedback from the community. However, some people were still skeptical about the results, and I wanted to go further
 in the analysis, due to multiple factors. 
+
+https://towardsdatascience.com/analyzing-tilt-to-win-more-games-league-of-legends-347de832a5b1
 
 ## What's LoserQ?
 
@@ -66,9 +68,24 @@ We&#39;re not intentionally putting bad players on your team to make you lose mo
 
 ## Why did I redo the analysis?
 
+!!! Quote annotate "Comment from [Matos3001](https://www.reddit.com/r/leagueoflegends/comments/15k2nw4/comment/jvlq50c/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button) on my previous post"
+
+    [...] while [you] might understand a lot about balls in the sky, [you] are no statistician. [...] (1)
+
+ 1. <figure markdown="span">
+  ![Relevant meme](https://i.kym-cdn.com/entries/icons/original/000/035/410/Screen_Shot_2020-10-05_at_11.51.58_AM.png){ width="400" }
+</figure>
+
 First analysis was a 4Fun stuff I did during my manuscript writing in a day. 
 I do not know convincing analysis that prove the existence of loserQ, all I read 
 was either irreproducible, erroneous or anectodical. 
+
+After my first post, I was really surprised by the number of people how disclaimed the results, saying that I was not a
+statistician. 
+C'est vrai que je suis resté en surface, ça manquait le pas entre un simple truc pour s'amuser et des résultats de qualité scientifique.
+While I am perfectly aware and transparent about the bias of the previous and current study, I am still an 
+astrophysicist, and I know a bit about statistics. When doing evidence based science, statistic is the backbone of any 
+solid result you can get.
 
 The main concern I was facing is that I only focused on Master+ players, and
 this is not necessarily representative of the whole player base. Moreover, I didn't go deep in the details of the 

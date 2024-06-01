@@ -1,9 +1,9 @@
+# Application to true data
+
 !!! abstract "TL;DR"
     - When applied to true data, the best model to describe the history of games is a 1st order DTMC, where 
     the outcome of a game *weakly* depends on the previous game.
     - We show that this model is performant at describing the expected correlations, streak lengths and others 
-
-# Application to true data
 
 This is the first approach I used in my [previous post about the LoserQ](https://www.reddit.com/r/leagueoflegends/comments/15k2nw4/existence_of_loser_queue_a_statistical_analysis/).
 The idea is pretty simple : you can go through all the collected histories, and count the number of games in a row 

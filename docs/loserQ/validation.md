@@ -1,10 +1,12 @@
+# Validating the approach
+
 !!! abstract "TL;DR"
     - I motivate a methodology to recover the underlying dynamics of a history of games based on DTMC.
     - This methodology is validated using various simulated dynamics, showing that it can accurately recover the 
     transition probabilities for simulated DTMC or point to correlations with a relatively low number of games.
     - A small digression about why do this instead of simply using `p-values`
 
-# Defining the approach
+## Defining the approach
 
 In the previous section, I introduced the concept of Discrete-time Markov Chains (DTMC), which are powerful mathematical 
 tools for describing the dynamics of a sequence of events. In the context of League of Legends, we can treat the history
@@ -17,8 +19,6 @@ best captures these transition probabilities, offering a deeper understanding of
 tendencies in the game.
 
 ## What to do in practice ?
-
-## Simulating history of games
 
 The previous page was an exhaustive description of the model I chose to describe the history of games in League of 
 Legends. When trying to assess stuff with mathematical models, it is always good to check if the methodology works on 
@@ -36,9 +36,13 @@ I propose to generate an obvious LoserQ mechanism using the following logic.
 The probability of winning the next game is linked to the winrate of the four previous games, the values are 
 highlighted in the following table. (I = 0.5)
 
+
+
 The probability of winning the next game is linked to the winrate of the four previous games, but in this situation, 
 a random variable is drawn from a given distribution to describe how much this player would be affected by the 
 LoserQ. The values are highlighted in the following table.
+
+
 
 | Winrate of the 4 previous games | Probability of winning next game |
 | :-----------------------------: | :------------------------------: |
@@ -50,29 +54,35 @@ LoserQ. The values are highlighted in the following table.
 
 where $I$ is drawn from a $\beta$ random variable $\alpha = 1.2$ and $\beta=10$.
 
-=== "Example history"
+<div class="grid cards" markdown>
 
-    ``` plotly
-    {"file_path": "loserQ/assets/history_multiple_players.json"}
-    ```
+-   <p style='text-align: center;'> **True and simulated history of games for comparison** </p>
+    
+    === "Example history"
+    
+        ``` plotly
+        {"file_path": "loserQ/assets/history_multiple_players.json"}
+        ```
+    
+    === "Pure coin flips"
+    
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_coinflip.json"}
+        ```
+    
+    === "Obvious LoserQ"
+    
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_obvious.json"}
+        ```
+    
+    === "Nasty LoserQ"
+    
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_nasty.json"}
+        ```
 
-=== "Pure coin flips"
-
-    ``` plotly
-    {"file_path": "loserQ/assets/validation_coinflip.json"}
-    ```
-
-=== "Obvious LoserQ"
-
-    ``` plotly
-    {"file_path": "loserQ/assets/validation_obvious.json"}
-    ```
-
-=== "Nasty LoserQ"
-
-    ``` plotly
-    {"file_path": "loserQ/assets/validation_nasty.json"}
-    ```
+</div>
 
 ??? question annotate
     Can you distinguish a true player history compared to simulated ones ? Solution : (1)
@@ -114,7 +124,7 @@ where $I$ is drawn from a $\beta$ random variable $\alpha = 1.2$ and $\beta=10$.
     </center>
 
 
-## How do we validate the methodology?
+## Validation on mock data
 
 So, the whole idea would be to recover the underlying dynamics from a given set of history of games. To do this, my take 
 is to determine the best transition probabilities for a given DTMC. By determining these probabilities for various DTMC 
@@ -132,23 +142,126 @@ Summing these likelihoods gives us the likelihood of the observed history we gat
 posterior distribution of the transition probabilities. We sample this posterior distribution using MCMC sampler, in 
 particular the NUTS sampler as implemented in the `numpyro` library.
 
-## Validation on obvious LoserQ
-
 We test the methodology on LoserQ-like **simulated** data. I show that we can recover the good parameters of the model
 using mock data.
 
 
-![Corner light](assets/obvious_loserq_whitemode.png#only-light){data-title="A posteriori distributions for the transition probability" data-description="This is a visual representation of the 16-dimensional posterior distributions for the transition probabilities of the 4-game memory DTMC that corresponds to the best model according to the ELDP criterion. The values that were used to generate the data are highlighted in black."}
+=== "Transitions (i)"
+    <div class="grid cards" markdown>
 
-![Corner_dark](assets/obvious_loserq_darkmode.png#only-dark){data-title="A posteriori distributions for the transition probability" data-description="This is a visual representation of the 16-dimensional posterior distributions for the transition probabilities of the 4-game memory DTMC that corresponds to the best model according to the ELDP criterion. The values that were used to generate the data are highlighted in black."}
+    -   <p style='text-align: center;'> **(Loss, Loss, Loss, Loss) to Win** </p>
+        
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_transition_probas_0.json"}
+        ```
 
+    -   <p style='text-align: center;'> **(Loss, Loss, Loss, Win) to Win** </p>
 
-- Show that this methodology can recover the dynamic in 1) Mock loserQ super exaggerated with a DMC 2) Subtle loserQ 
-using another mechanism than DMC  Use probability of winning = sin(T)? 
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_transition_probas_1.json"}
+        ```
 
+    -   <p style='text-align: center;'> **(Loss, Loss, Win, Loss) to Win** </p>
 
-## A digression about statistics :nerd:
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_transition_probas_2.json"}
+        ```
 
+    -   <p style='text-align: center;'> **(Loss, Loss, Win, Win) to Win** </p>
+
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_transition_probas_3.json"}
+        ```
+
+    </div>
+
+=== "Transitions (ii)"
+    <div class="grid cards" markdown>
+
+    -   <p style='text-align: center;'> **(Loss, Win, Loss, Loss) to Win** </p>
+        
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_transition_probas_4.json"}
+        ```
+
+    -   <p style='text-align: center;'> **(Loss, Win, Lose, Win) to Win** </p>
+
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_transition_probas_5.json"}
+        ```
+
+    -   <p style='text-align: center;'> **(Loss, Win, Win, Loss) to Win** </p>
+
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_transition_probas_6.json"}
+        ```
+
+    -   <p style='text-align: center;'> **(Loss, Win, Win, Win) to Win** </p>
+
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_transition_probas_7.json"}
+        ```
+
+    </div>
+
+=== "Transitions (iii)"
+    <div class="grid cards" markdown>
+
+    -   <p style='text-align: center;'> **(Win, Loss, Loss, Loss) to Win** </p>
+        
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_transition_probas_8.json"}
+        ```
+
+    -   <p style='text-align: center;'> **(Win, Loss, Loss, Win) to Win** </p>
+
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_transition_probas_9.json"}
+        ```
+
+    -   <p style='text-align: center;'> **(Win, Loss, Win, Loss) to Win** </p>
+
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_transition_probas_10.json"}
+        ```
+
+    -   <p style='text-align: center;'> **(Win, Loss, Win, Win) to Win** </p>
+
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_transition_probas_11.json"}
+        ```
+
+    </div>
+
+=== "Transitions (iv)"
+    <div class="grid cards" markdown>
+
+    -   <p style='text-align: center;'> **(Win, Win, Loss, Loss) to Win** </p>
+        
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_transition_probas_12.json"}
+        ```
+
+    -   <p style='text-align: center;'> **(Win, Win, Loss, Win) to Win** </p>
+
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_transition_probas_13.json"}
+        ```
+
+    -   <p style='text-align: center;'> **(Win, Win, Win, Loss) to Win** </p>
+
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_transition_probas_14.json"}
+        ```
+
+    -   <p style='text-align: center;'> **(Win, Win, Win, Win) to Win** </p>
+
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_transition_probas_15.json"}
+        ```
+
+    </div>
+    
 *[DTMC]: Discrete-time Markov Chain
 *[MCMC]: Markov Chain Monte Carlo
 *[NUTS]: No-U-Turn Sampler
