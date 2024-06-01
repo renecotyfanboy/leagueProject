@@ -1,4 +1,4 @@
-# Some theoretical background
+# A bit of theory
 
 Sorry I lied, that's a lot of theory.
 
@@ -13,13 +13,35 @@ Sorry I lied, that's a lot of theory.
 
 ## What do I want to find ?
 
-Let's suppose for a second that LoserQ is a real thing. This means, for a given player, that the games played are not 
-fair over time. Especially in this kind of streak mechanism, we should see a clear deviation from randomness (which is 
+Riot might know perfectly the outcome of a match (even if I doubt it), and could use this information 
+to match you with people that could make you lose. Doing so, they could imprison people in loops of wins and losses,
+which would make them play more, and therefore spend more money on the game. They could autofill you when desired, or 
+use the almighty AI at Tencent to know what is the color of your underwear. My goal here is to investigate this and 
+see if there is any evidence of such a mechanism in the data. Don't get me wrong :
+
+1. I cannot show that Riot matches you with people that are already losing. This is too much recursive call to the API, 
+and my poor personal API-key would take eons to gather what I require. Also, in general, I cannot predict the outcome of 
+a game with the data I am gathering through the API (or at least, I can't gather enough data in low timescale). This is
+something I might take a look at when playing around the amazing `trueskill2` algorithm.
+2. I cannot write about in-game feeling. I don't care if games feel un-winnable or un-losable, only matter the results 
+in term of wins and losses. In particular, I cannot prove nor disprove that Riot has a perfect control about the outcome
+of games. But if they do, and if they make it deviate from randomness, I could see it in the dataset. 
+3. I cannot disprove that players experiences wins or losses streaks, since this is happening. Especially in early seasons, 
+when people are placed too high or too low, they will experience streaks of wins and losses, and this is **normal** since
+the algorithm is not perfect at predicting your level, and it might get some time so that you reach your true rank. This 
+is why I focus on players that are supposedly close to their true rank. The dataset contains the last 100 games of players
+that played at least 200 games in the first split of 2024, from which remakes are removed, leading to at least 85 games per
+player.
+
+However, there is a lot of stuff to do using the data from match histories. Let's suppose for a second that LoserQ is 
+a real thing. This means, for a given player, that the games played are not fair over time, even when they reach their true rank. Especially in this kind of streak mechanism, we should see a clear deviation from randomness (which is 
 what would happen if each match was perfectly fair and that the probability of winning a game is exactly 50% at each 
 match). This deviation, if it exists, should be measurable since many players claim to experience it. In particular, 
 we could see that on average, players tend to lose more right after losing, and win more right after winning. In a 
 nutshell, we should see that the outcome of a game depends on the previous games, which means that matches outcomes are
-correlated one with the other. 
+correlated. 
+
+
 
 Signatures of the existence of LoserQ could be found in many ways in the match history of players. What comes to my mind 
 are the following:
@@ -37,7 +59,7 @@ what you would expect from random coin flips in term of streak lengths. The prob
 bit higher than what was expected from this elo (2% higher than expected). This could be a signature of the LoserQ, but
 it is way too low to explain what people claim to experience, i.e. streaks of 10 losses in a row. Don't get me wrong, 
 this doesn't mean that there are no summoners losing or winning that much in a row, but my claim is that these streaks 
-are as frequent as what you would expect from randomness. 
+are as frequent as streaks that would emerge from randomness once they reached their true rank. 
 
 ## Let's meet with the data
 
@@ -53,10 +75,9 @@ using Riot's API, I can easily plot it as a curve, as shown below. Behold, the h
 
 </div>
 
-As you can see, this looks like a fancy barcode. But there is no way to tell if anything 
-special is happening here, but we will find later that there are better ways to display this kind of data 
-so that we can learn more about the matchmaking system. A nice thing to do would be to plot this kind of stuff, but 
-for several players within the same division. 
+As you can see, this looks like a fancy barcode. There is no way to tell if anything special is happening here using 
+only our eyes, we'll have to use maths to go a little beyond. But first, a nice thing to do would be to plot the match 
+history for several players within the same division. 
 
 <div class="grid cards" markdown>
     
@@ -70,12 +91,15 @@ for several players within the same division.
 This has now become a QRcode where the horizontal lines represent history of games for different players. I'll keep this convention 
 in all the website. The pattern you can observe only emerge from the randomness of the process. This visualisation 
 by itself has no use, but it is very helpful to construct an intuition about what the data looks like and how it should behave. 
+For you to know, all my analysis will be based on such observables. To be precise, I will use a dataset of 
 
-Bigger streak in out sample, some stuff etc.
+$$ \underbrace{31}_{\text{nb of divisions}} 
+\times \underbrace{100}_{\text{nb of players}} 
+\times \underbrace{85}_{\text{nb of players}} = 263500 \ \text{games}$$
 
-## Modeling the histories
-
-I should define what to do next, this kind of data needs to be modeled with stuff that can describe such series.
+which is $\sim2.5$ times more than the previous dataset, but also much more diverse (100 players per division) and 
+cleanly selected (highly involved summoners only). This dataset is described and available in the 
+[dedicated section](../dataset/introduction.md) of the website. 
 
 ## Markov chains for the win
 
@@ -84,21 +108,22 @@ I should define what to do next, this kind of data needs to be modeled with stuf
     is intended to be a high-level overview of the model, and is not necessary to understand the rest of the website. Feel
     free to skip if you hate maths and equations.
 
-As seen below, game histories are a sequence on binary random variables $X = \text{Win}$ if this is a win and $X = \text{Loss}$ if it's a loss. 
-The most straightforward way to model this is to flip a coin at each game, and assign a win or a loss depending on the outcome. 
+The challenge now is to find a model capable of capturing the intrinsic correlations in these histories in a quantitative way. 
+As seen below, game histories are sequences of binary random variables $X = \text{Win}$ if this is a win and $X = \text{Loss}$ if it's a loss. 
+The simplest way to model this would to flip a coin at each game, and assign a win or a loss depending on the outcome. 
 From a probability point of view, doing this is equivalent to considering a Bernoulli process. Each game outcome is purely 
-random, and do not depend on the previous games. In this situation, the outcome of game n°$n$ is a Bernoulli random variable : 
+random, and do not depend on the previous games. In this situation, the outcome of game $n$ is a Bernoulli random variable : 
 
 $$
 P(X_n = \text{Win}) = p 
 $$
 
 The probability $p$ should be close to the player's winrate if we want it to model properly the player's history. Here, 
-you might understand that this may be too simplistic, as we know that the outcome of a game can depend on the previous 
-games. There are many factors (beside considering LoserQ) that can influence the outcome of a game depending on the previous
-games played, such as the player's mood, the tiredness etc. To model this, we should consider a more complex process, 
-where the outcome of a game depends on the previous games. This can be achieved using (Discrete Time) Markov Chains.
-DTMCs are a very useful tool when it comes to describing random processes where the output at a given time depends on
+you might understand that this may be too simplistic. The outcome of a game can depend on the previous 
+games. There are many factors (beside considering LoserQ) that can influence the outcome depending on the previous
+matches, such as the player's mood, the tiredness etc. To model this, we should consider a more complex process, 
+where the outcome depends on the previous games. This can be achieved using (Discrete Time) Markov Chains.
+DTMC are a very useful tool when it comes to describing random processes where the output at a given time depends on
 a finite number of states in the past. Let's illustrate this with a chain which depends on the previous game only. Such
 a chain can be represented as a graph :
 
@@ -117,12 +142,10 @@ P(X_n = \text{Win} | X_{n-1} = \text{Win}) = 80\% \\ P(X_n = \text{Loss} | X_{n-
  \end{array} \right.
 $$
 
-??? note 
-    We only need to set half of the probabilities, since they add up to 1. If 
-    $P(X_n = \text{Win} | X_{n-1} = \text{Win}) = 80\%$, then $P(X_n = \text{Loss} | X_{n-1} = \text{Win}) = 20\%$. This is
-    a constraint that we must remember when setting things up.
-
-These set of equations correspond to a chain where you are much more likely to win after a win, and to lose after a loss.
+We only need to set half of the probabilities, since they add up to 1. If $P(X_n = \text{Win} | X_{n-1} = \text{Win}) = 80\%$, 
+then $P(X_n = \text{Loss} | X_{n-1} = \text{Win}) = 20\%$. This is a constraint that we must remember when setting things up. 
+I will often refer as the probability of the outcome of a match depending the previous match as the transition probabilities.
+These set of transition probabilities correspond to a case where you are much more likely to win after a win, and to lose after a loss.
 To draw samples from this chain, we start with a random state, and then we move to the next state with a probability
 given by the arrows. For example, if we start with a win, we draw the next result between a win and a loss with a probability
 of 80% and 20% respectively. This is a very simple example, but we can imagine more complex chains where the outcome of a 
@@ -155,12 +178,11 @@ $$
 \text{ where } \mathcal{P}_{ij} = P(X_n = \text{state j} | X_{n-1} = \text{state i})
 $$
 
-??? note 
-    The transition matrix is a stochastic matrix. Each line adds up to 1, which means that the sum of the probabilities
-    of moving to the next state is 1. It means that you must end up somewhere at each iteration, which is equivalent to
-    saying that the sum of the probabilities of each arrow departing from a node is 1.
+I will also refer to the number of previous games to consider as the order of the chain, which is 2 for the previous one.
+Don't mind me if I refer to it as the memory size of the chain. For a chain with $m$ state memory, we need to define 
+$2^m$ transition probabilities.
 
-??? danger "Nigthmare fuel"
+??? danger "Nigthmare fuel : graph of DTMC with 4 states"
     
     You can imagine monstrosities or other biblically acurate angels when considering that the outcome of a game 
     depends on more previous played games. As the number of states to consider grows exponentially, the associated 
@@ -203,41 +225,25 @@ $$
         WWWW --> |75%| WWWW
     ```
 
-In the most general case, the probability of winning
-a game depends on the $m$ previous game's outcome, which can be written as : 
-
-$$
-P(X_n = 1 | X_{n-1}, X_{n-2} ..., X_{n-m}) = f(X_{n-1}, X_{n-2} ..., X_{n-m})
-$$
-
-If we consider that the outcome of a game depends only on the previous game, we can write :
-
-$$
-P(X_i = 1 | X_{i-1}) = f(X_{i-1})
-$$
-
-This is the modelisation I will use in the next sessions in my analysis. In my opinion, this is a very well motivated 
+This is the modelisation I will use to describe the match histories. In my opinion, this is a very well motivated 
 model for the following reasons : 
 
-- It is **simple** to implement and to understand. This kind of model is very handy when it comes to explainability
-  (unlike your favorite AI models), and the mathematics behind it are very simple, making it easy to use various 
-  observables and compute the associated significance.
+- It is **simple** to implement and to understand. This kind of model is very handy when it comes to interpret the results
+  (unlike your favorite AI models), and the mathematics behind it are very simple.
 - It is **powerful**. This model can capture a lot of different patterns, and can be used to investigate the history
-  of games in a very efficient way.
-- It is **flexible**. You can easily change the number of previous games to consider, and the probabilities associated
-  with each state. This is very useful when you want to investigate different hypothesis about the matchmaking system.
-
+  of games even if very fancy mechanisms are at play.
 ## How to fit the model
 
 <div class="annotate" markdown>
 What I will do in this analysis is what we call [statistical inference](https://en.wikipedia.org/wiki/Statistical_inference).
 This is the process of deducing the best parametrisation $\theta$ of an arbitrary model from experimental data $D$. This is a very 
-common practice in science, and is used in many fields such as physics, astrophysics, biology, etc. There are many way 
-to both defining what it means to be the best parameters and finding them according to this criterion. I am personally 
+common practice in science, and is used in many fields such as physics, astrophysics, biology, etc. Here $\theta$ is the 
+value of the $2^n$ transition probabilities of the DTMC of order $n$ we consider, and $D$ is the dataset of match histories.
+There are many way to both defining what it means to be the best parameters and finding them according to this criterion. I am personally 
 convinced of the superiority of Bayesian inference approaches (1) for this specific task. In this framework, we characterize 
 our knowledge on the parameters of a model using probability distributions. We first pour in some *a priori* knowledge 
-on what we expect to get. Then, we update our knowledge on the parameters by confronting it to the data. Using Bayes 
-formula, the update on our knowledge is quantified as follows : 
+on what we expect to get. Then, we update our knowledge on the parameters by confronting it to the data. The update on 
+our knowledge is quantified using Bayes formula: 
 </div>
 
 1. <figure markdown="span">
@@ -264,9 +270,8 @@ $$
     {"file_path": "loserQ/assets/illustration_bayesian.json"}
     ```
     <p style='text-align: justify; width: 80%; margin-left: auto; margin-right: auto;'>
-    The prior distribution (blue) is updated using the likelihood of the data, leading to the posterior
-    distribution (red) of the parameters, which brings a more constrained value when
-    compared to our prior knowledge.
+    The prior distribution $P(\theta)$ (blue) is updated using the likelihood of the data, leading to the posterior
+    distribution  $P(\theta|D)$ (red) of the parameters, which give a more constrained value.
     </p>
 </div>
 
@@ -283,7 +288,7 @@ But I cannot but emphasize on the fact that the posterior distribution is in gen
 because of the constraints when doing mathematics with probability distributions. In general, we do not solve for this 
 distribution, but use mathematical turnarounds to get samples which are distributed according to it. For you to know, 
 the most widely used methods use [Markov Chain Monte Carlo](https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo) approaches to solve this kind of problems, which I 
-won't detail much in this website. 
+won't detail much in this website since I think this is way too technical to be of interest for everyone.
 
 ## Why do we even bother with this
 
@@ -295,9 +300,9 @@ Astrophysics, we mostly use `Z-score` which carries the same information. A `Z-s
 `p-value`, a `Z-score` of $3\sigma$ corresponds to a 99.7% `p-value`, and a `Z-score` of $5\sigma$ corresponds to a 
 99.9999% `p-value`. To give you an idea, 3$\sigma$ is an acceptable standard in physics, 
 $5\sigma$ is the common threshold for a discovery in particle physics at the CERN, and $5.1\sigma$ is the 
-significance of the first gravitational waves event detected by LIGO. However, even in academia, many people are not 
+significance of the [first gravitational waves event detected by LIGO](https://en.wikipedia.org/wiki/First_observation_of_gravitational_waves). However, even in academia, many people are not 
 clear in their mind about what the `p-value`really is. There are a lot of [over-interpretation](https://en.wikipedia.org/wiki/Misuse_of_p-values)
-of this quantity, many people still interpret it as the probability of the hypothesis being true, which is **really** not 
+of this quantity, many people still interpret it as the probability of the hypothesis being true, which is really **not** 
 the case.
 
 The Bayesian approach provides us with some great keys to interpret this kind of results. Instead of computing `p-values`,

@@ -1,58 +1,39 @@
 # Validating the approach
 
 !!! abstract "TL;DR"
-    - I motivate a methodology to recover the underlying dynamics of a history of games based on DTMC.
-    - This methodology is validated using various simulated dynamics, showing that it can accurately recover the 
-    transition probabilities for simulated DTMC or point to correlations with a relatively low number of games.
-    - A small digression about why do this instead of simply using `p-values`
+    - I want to validate this methodology using mock data to show its ability to recover dynamics in match histories.
+    - I propose two kind of simulations to do this : an obvious LoserQ mechanism and a nasty LoserQ
+    - I show that the methodology can accurately recover arbitrary dynamics with a relatively small number of games ($\lesssim 10000$)
+    for both the obvious and nasty mock LoserQ mechanism.
 
-## Defining the approach
-
-In the previous section, I introduced the concept of Discrete-time Markov Chains (DTMC), which are powerful mathematical 
-tools for describing the dynamics of a sequence of events. In the context of League of Legends, we can treat the history
-of games as a sequence of states, where each state represents a game outcome (win or loss). By applying DTMC to these 
-sequences, we can analyze the transition probabilities between states, revealing the underlying patterns in match 
-outcomes. This methodology enables us to investigate whether losing streaks (or winning streaks) follow a predictable 
-pattern, thus providing insights into the existence of "LoserQ," a phenomenon where players might be more likely to 
-continue losing once they start. Using Bayesian inference and model comparison, we aim to identify the DTMC model that 
-best captures these transition probabilities, offering a deeper understanding of any potential biases or streak 
-tendencies in the game.
-
-## What to do in practice ?
+## Generating mock data
 
 The previous page was an exhaustive description of the model I chose to describe the history of games in League of 
 Legends. When trying to assess stuff with mathematical models, it is always good to check if the methodology works on 
-mock data. To do this, I will show that this methodology is able to recover the parameters of three simulated samples.
-
+mock data. To do this, I will show that this methodology is able to recover the parameters of two simulated samples.
 
 1. A simulation where there is an obvious LoserQ mechanism, where your probability of winning is linked to
 the four previous game you played. 
 2. A simulation where there is a nasty LoserQ mechanism, where most of the players would not see significant 
 patterns while some would be cursed by long streaks of wins and losses.
 
-To generate mock history of players in this case, we simply flip a coin with a $50\%$ chance of winning.
+The probability of winning the next game is linked to the winrate of the four previous games (4-order DTMC), the values are 
+highlighted in the following table.
 
-I propose to generate an obvious LoserQ mechanism using the following logic. 
-The probability of winning the next game is linked to the winrate of the four previous games, the values are 
-highlighted in the following table. (I = 0.5)
+??? info "Transition probabilities for mock LoserQ mechanisms"
 
+    | Winrate of the 4 previous games | Probability of winning next game |
+    | :-----------------------------: | :------------------------------: |
+    | $0\%$                           | $50\% - I\times 37.5\%$          |
+    | $25\%$                          | $50\% - I\times 12.5\%$          |
+    | $50\%$                          | $50\%$                           |
+    | $75\%$                          | $50\% + I\times 12.5\%$          |
+    | $100\%$                         | $75\% + I\times 37.5\%$          |
 
-
-The probability of winning the next game is linked to the winrate of the four previous games, but in this situation, 
-a random variable is drawn from a given distribution to describe how much this player would be affected by the 
-LoserQ. The values are highlighted in the following table.
-
-
-
-| Winrate of the 4 previous games | Probability of winning next game |
-| :-----------------------------: | :------------------------------: |
-| $0\%$                           | $50\% - I\times 37.5\%$          |
-| $25\%$                          | $50\% - I\times 12.5\%$          |
-| $50\%$                          | $50\%$                           |
-| $75\%$                          | $50\% + I\times 12.5\%$          |
-| $100\%$                         | $75\% + I\times 37.5\%$          |
-
-where $I$ is drawn from a $\beta$ random variable $\alpha = 1.2$ and $\beta=10$.
+    - $I = 0.5$ for the obvious loserQ, enabling huge streaks occuring for everyone.
+    - $I$ is drawn from a $\beta$ random variable $\alpha = 1.2$ and $\beta=10$ for the nasty loserQ, so that most of the 
+        player would experience no significant pattern, but some would be cursed by long streaks of wins and losses.
+    
 
 <div class="grid cards" markdown>
 
@@ -84,7 +65,7 @@ where $I$ is drawn from a $\beta$ random variable $\alpha = 1.2$ and $\beta=10$.
 
 </div>
 
-??? question annotate
+??? question annotate "Minigame"
     Can you distinguish a true player history compared to simulated ones ? Solution : (1)
     <table>
     <tr>
@@ -112,10 +93,9 @@ where $I$ is drawn from a $\beta$ random variable $\alpha = 1.2$ and $\beta=10$.
     </table>
 
 
-1.  All are simulated. The one below is not. It is sampled from summoners in Emerald I. Or is it ? (1)
+1.  All are simulated (1). The one below is not. It is sampled from summoners in Emerald I.
     { .annotate }
-    1.  It is. I swear. Prankex free.
-    <div class="tenor-gif-embed" data-postid="27578414" data-share-method="host" data-aspect-ratio="1" data-width="50%"><a href="https://tenor.com/view/prankex-gif-27578414">Prankex Sticker</a>from <a href="https://tenor.com/search/prankex-stickers">Prankex Stickers</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+    1. <center> <div class="tenor-gif-embed" data-postid="27578414" data-share-method="host" data-aspect-ratio="1" data-width="50%"><a href="https://tenor.com/view/prankex-gif-27578414">Prankex Sticker</a>from <a href="https://tenor.com/search/prankex-stickers">Prankex Stickers</a></div> </center> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
 
     <center>
     ``` plotly
@@ -124,27 +104,60 @@ where $I$ is drawn from a $\beta$ random variable $\alpha = 1.2$ and $\beta=10$.
     </center>
 
 
-## Validation on mock data
+## Practical implementation
 
-So, the whole idea would be to recover the underlying dynamics from a given set of history of games. To do this, my take 
-is to determine the best transition probabilities for a given DTMC. By determining these probabilities for various DTMC 
+So, as a summary of the theory section,  the whole idea would be to recover the underlying dynamics from a given set of match history. 
+To do this, my take is to determine the best transition probabilities for a given DTMC using MCMC methods. By determining these probabilities for various DTMC 
 with increasing memory size, we obtain best-fit models for the underlying dynamics. By comparing these models using 
-appropriate methodologies, we can determine the best model to describe the history of games. 
+ELDP-LOO, we can determine the best model to describe the history of games. 
 
-In practice, I'll determine the transition probabilities for DTMC with memory size $1$ to $10$. I will then compare these
-models using state of the art Bayesian model comparison techniques. And by comparing these, we get the best model to 
-describe the history of games.
+In practice, I'll determine the transition probabilities for DTMC with memory size $1$ to $6$. We sample this posterior 
+distributions using the NUTS sampler as implemented in the `numpyro` library. Then, I compare these
+models using the comparator implemented in the `arviz` library. All the code is available on the [Github repository](https://github.com/renecotyfanboy/leagueProject),
+and the API of the helper package I wrote is detailed in the [documentation](../api/data.md).
+As a mock dataset, I generated 85 games for 100 players, and applied the aforementioned methodology for both the obvious and nasty LoserQ mechanisms. 
+Most of the computations where performed either on the [SSP Cloud data](https://datalab.sspcloud.fr/), which nicely and freely
+providing GPUs to Fr*nch academics, or on my personal computer.
 
-For each memory size, we solve a Bayesian inference problem, using flat prior between $0$ and $1$ for the authorized 
-transition probabilities. The likelihood is simply determined using the history of games, as we can unroll the chain 
-an compute the likelihood of each player history in the dataset, given the transition probabilities of the chain. 
-Summing these likelihoods gives us the likelihood of the observed history we gathered, and can be used to compute the 
-posterior distribution of the transition probabilities. We sample this posterior distribution using MCMC sampler, in 
-particular the NUTS sampler as implemented in the `numpyro` library.
+## Assessing the performance
 
-We test the methodology on LoserQ-like **simulated** data. I show that we can recover the good parameters of the model
-using mock data.
+Let's first observe the comparator plot for the two simulated datasets. We will discuss a bit on how to interpret them.
 
+=== "Obvious LoserQ"
+
+    <div class="grid cards" markdown>
+
+    -   <p style='text-align: center;'> **Comparator plot** </p>
+        
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_obvious_compare.json"}
+        ```
+
+    </div>
+
+=== "Nasty LoserQ"
+
+    <div class="grid cards" markdown>
+
+    -   <p style='text-align: center;'> **Comparator plot** </p>
+        
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_nasty_compare.json"}
+        ```
+
+    </div>
+
+
+We can see first that the higher ELDP models in our comparator are the 4-order models. This is great, since this is the 
+memory I used to generate the mock data. For the obvious LoserQ, we see that the 5-order model is also a contender for 
+the first place. Since the true input is a 4-order dynamics, a 5-order dynamics can also reproduce the data, but with 
+lower ELDP since it overfit a bit the data. Same comment for the 6-order model. For the nasty LoserQ, we see that the 
+4-order model is also the best, and that the 2-order is the second best. This is pretty interesting since this mechanism 
+was designed to be hard to detect, and should disguise as lower order dynamic for the people that are not violently cursed. 
+
+Since the obvious LoserQ is a pure DTMC, we can also check the transition probabilities we recovered for the best model
+and check that they are close to the one I used to run the simulations. This is what I show in the following plots, where
+we see that our posterior distributions (in green) are coincident with the true values (in grey).
 
 === "Transitions (i)"
     <div class="grid cards" markdown>

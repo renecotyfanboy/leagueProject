@@ -5,15 +5,7 @@
     the outcome of a game *weakly* depends on the previous game.
     - We show that this model is performant at describing the expected correlations, streak lengths and others 
 
-This is the first approach I used in my [previous post about the LoserQ](https://www.reddit.com/r/leagueoflegends/comments/15k2nw4/existence_of_loser_queue_a_statistical_analysis/).
-The idea is pretty simple : you can go through all the collected histories, and count the number of games in a row 
-that were lost or won. By plotting the histogram of these streak lengths, you can get an idea of how they are distributed. 
-
 ## Best-fit model 
-
-The below comparison shows that the best model to describe the history we observe is a 1st order DTMC, where the outcome
-of a game *weakly* depends on the previous game. This is a good sign that the data is consistent with the hypothesis that
-the streak lengths are drawn from a random process. 
 
 <div class="grid cards" markdown>
 
@@ -30,9 +22,9 @@ the streak lengths are drawn from a random process.
 
 </div>
 
-The model comparison displayed in the previous graph shows that the best model to describe the history we observe is a
-1st order DTMC. In other words, to best predict the outcome of a game, you only need to know the outcome of the previous
-game. This is the most significant dependence we can find using this dataset. Note that the second order and third order
+The previous comparison shows that the best model to describe the history we observe is a 1st order DTMC, where the outcome
+of a game *weakly* depends on the previous game. In other words, to best predict the outcome of a game, you only need to know the outcome of the previous
+game. This is the most significant dependence we can find using the full dataset. Note that the second order and third order
 model are also compatible, but this is probably due to the fact that they can also reproduce the first order model, but 
 with a bit of overfitting, which reduces the ELPD-LOO metric. This behavior is similar as what we observed in the 
 validation of the model on the simulated data. So we will focus on the first order model. We can plot the associated 
@@ -73,16 +65,16 @@ previous.
 
 ## Streak lengths
 
-To check whether our best fit model is indeed descriptive of our data or not, we can perform what is called a 
-posterior predictive check. This is a simple procedure where you generate a lot of data using the best fit model, and
+To check whether our best fit model is indeed descriptive of our data or not, we can perform what is called 
+posterior predictive checks. This is a simple procedure where you generate a lot of data using the best fit model, and
 compare the distribution of the observables to the real data. This is a good way to check if the model is able to 
-reproduce the data, and if it is consistent with the hypothesis that the data is drawn from the model. One issue we 
+reproduce the data. One issue we 
 have with directly comparing the true game history to the model is that it is hard to compare two random processes 
 directly. Imagine you have to compare two series of coinflip, checking one by one if the outcomes are the same is a 
 non-sense since this is stochastic. However, you can easily compare averaged quantities, such as the mean of the two 
-series, their standard deviation etc. In my previous analysis, I chose to compare the distribution of streak lengths, 
-which should be comparable (up to the intrinsic uncertainties) when comparing the true data to the model. Below is the 
-distribution of streak lengths in our sample of game histories. 
+series, their standard deviation etc. In the following, I compare the distribution of streak lengths from the true 
+dataset to what we expected to measure using the best-fit model. Below is the 
+distribution of streak lengths in our true dataset of match histories. 
 
 <div class="grid cards" markdown>
 
@@ -97,16 +89,15 @@ distribution of streak lengths in our sample of game histories.
 
 </div>
 
-You can easily check that it is already consistent with the results I get in my previous post, and that there are some
+This kinda looks like the results I got in my previous post, and that there are some
 players experiencing really long streaks of wins or losses (up to 16 wins and 17 losses in a row (1)).
 { .annotate }
 
 1.  <div class="tenor-gif-embed" data-postid="27295909" data-share-method="host" data-aspect-ratio="1.77778" data-width="100%"><a href="https://tenor.com/view/%C3%A7a-fait-beaucoup-la-non-gif-27295909">ça Fait Beaucoup La Non GIF</a>from <a href="https://tenor.com/search/%C3%A7a+fait+beaucoup+la+non-gifs">ça Fait Beaucoup La Non GIFs</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
 
-The approach I had was to compare it to a simulated sample of coin flips. I simply generated a lot of sequences of coin 
-flips to mock players histories, using a winrate drawn from the winrate distribution in our sample. I then computed 
-the distribution of streak lengths for these sequences, and compared it to the real data. Redoing this with the new dataset 
-yield the following graph :
+In the next graph, I simulate 1000 datasets and compute the streak lengths for each of them to propagate the uncertainties 
+coming from the sample variance and the model. I do the same for the obvious loserQ model I used in the validation to show 
+what we would expect in this case.
 
 <div class="grid cards" markdown>
 
@@ -127,13 +118,16 @@ yield the following graph :
 
 
 As the last time, the real data is consistent with the simulated data, which is hinted by the fact that the real data 
-fall between the $90\%$ confidence interval of the simulated data. This is a good sign that the streak lengths we 
-observe in our dataset are consistent with what you would expect from random coin flips.
+fall between the $95\%$ confidence interval of the simulated data. This is a good sign that the streak lengths we 
+observe in our dataset are consistent with what you would expect from random coin flips. We can see some tensions in the 
+most extreme streaks, (for the 2 players in the dataset that lost 16 games in a row, for example). This could point to external
+factors, e.g. mental boom, boosting, etc. but certainly not LoserQ since this is way too marginal.
 
 ## Auto-correlation
 
 The auto-correlation of a sequence is a measure of the similarity between the sequence and a delayed version of itself.
-This is the most visual way to see if the outcome of a game depends on the previous games. It can be computed with the 
+This is another kind of measurement we can use to both check the correlation within the dataset and the validity of our
+model. This is also the most visual way to see if the outcome of a game depends on the previous games. It can be computed with the 
 following formula:
  
 $$
@@ -185,15 +179,14 @@ a sequence of games where the outcome of a game depends on the previous game onl
 
     </div>
 
-The envelope of the previous graph represents the spread on this measure due to computing this auto-correlation for a 
-set of individual game histories. This auto-correlation varies from one player to another, and this envelopes gives us
-an idea of how much this quantity varies.
+We compute the autocorrelation for a simulated dataset and compare it to the autocorrelation of the true dataset. 
+The bands represent the 95% spread of autocorrelation within the simulated dataset, and we overlap samples from the 
+true dataset to show that it is consistent. We also add the autocorrelation of the obvious loserQ model to show that
+we would expect higher values up to a lag of 4, which is the order of the underlying DTMC model. 
 
 ``` plotly
 {"file_path": "loserQ/assets/true_data_correlation.json"}
 ```
-
-We see that our model can also reproduce the observed auto-correlation. 
 
 *[ELPD]: Expected log predictive density
 *[LOO]: Leave One Out
