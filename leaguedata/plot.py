@@ -64,6 +64,8 @@ def plot_compare_plotly(comp_df, save_to=None):
         save_to (str): The path to save the plot.
     """
 
+    comp_df = comp_df.sort_index()
+    
     plot_kwargs = {
         "color_ic": "black",
         "marker_ic": "circle",
@@ -73,24 +75,26 @@ def plot_compare_plotly(comp_df, save_to=None):
         "ls_min_ic": "dash",
         "color_ls_min_ic": "grey"
     }
-
+    
     color_criterion = 'rgba(0,176,246,1.)'
     color_difference = 'rgba(231,107,243,1.)'
     
     linewidth = 2
     information_criterion = 'elpd_loo'
-
+    
     n_models = len(comp_df)
     yticks_pos = np.arange(n_models)[::-1] * -1.5  # Increased spacing between ticks
     labels = comp_df.index.tolist()
-
+    
     # Create the figure
     fig = go.Figure()
-
+    
     # Add the ELPD difference error bars
+    diff_df = comp_df[comp_df['rank']>0]
+    
     fig.add_trace(go.Scatter(
-        x=comp_df[information_criterion].iloc[1:],
-        y=yticks_pos[1:] + 0.6,
+        x=diff_df[information_criterion],
+        y=yticks_pos[[int(x[0]) for x in diff_df.index]] + 0.6,
         error_x=dict(
             type='data', 
             array=comp_df['dse'][1:], 
@@ -107,7 +111,7 @@ def plot_compare_plotly(comp_df, save_to=None):
         ),
         name="ELPD difference"
     ))
-
+    
     # Add the ELPD error bars
     fig.add_trace(go.Scatter(
         x=comp_df[information_criterion],
@@ -129,19 +133,23 @@ def plot_compare_plotly(comp_df, save_to=None):
         ),
         name="ELPD"
     ))
-
+    
     # Add a vertical line
-    fig.add_shape(type="line",
-        x0=comp_df[information_criterion].iloc[0], y0=min(yticks_pos) - 1, x1=comp_df[information_criterion].iloc[0], y1=max(yticks_pos) + 1,
+    fig.add_shape(
+        type="line", 
+        x0=comp_df[comp_df['rank']==0][information_criterion].iloc[0], 
+        y0=min(yticks_pos) - 1, 
+        x1=comp_df[comp_df['rank']==0][information_criterion].iloc[0], 
+        y1=max(yticks_pos) + 1,
         line=dict(color=plot_kwargs["color_ls_min_ic"], width=linewidth, dash=plot_kwargs["ls_min_ic"]),
     )
-
+    
     fig.update_xaxes(showgrid=True, minor=dict(showgrid=True))
     fig.update_yaxes(showgrid=True, minor=dict(showgrid=True))
     # Update axes properties
     fig.update_layout(
         xaxis_title='log(ELPD LOO) [higher is better]',
-        yaxis_title='Model ranking',
+        #yaxis_title='Model',
         yaxis=dict(
             tickmode='array',
             tickvals=yticks_pos,
@@ -158,7 +166,7 @@ def plot_compare_plotly(comp_df, save_to=None):
             x=1
         )
     )
-
+    
     fig.show()
 
     if save_to is not None:
