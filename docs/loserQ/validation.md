@@ -123,6 +123,18 @@ providing GPUs to Fr*nch academics, or on my personal computer.
 
 Let's first observe the comparator plot for the two simulated datasets. We will discuss a bit on how to interpret them.
 
+=== "Coinflip history"
+
+    <div class="grid cards" markdown>
+
+    -   <p style='text-align: center;'> **Comparator plot** </p>
+        
+        ``` plotly
+        {"file_path": "loserQ/assets/validation_coinflip_compare.json"}
+        ```
+
+    </div>
+
 === "Obvious LoserQ"
 
     <div class="grid cards" markdown>
@@ -142,7 +154,7 @@ Let's first observe the comparator plot for the two simulated datasets. We will 
     -   <p style='text-align: center;'> **Comparator plot** </p>
         
         ``` plotly
-        {"file_path": "loserQ/assets/validation_obvious_compare.json"}
+        {"file_path": "loserQ/assets/validation_nasty_compare.json"}
         ```
 
     </div>

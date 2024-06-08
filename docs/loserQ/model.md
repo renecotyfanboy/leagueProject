@@ -95,7 +95,7 @@ For you to know, all my analysis will be based on such observables. To be precis
 
 $$ \underbrace{31}_{\text{nb of divisions}} 
 \times \underbrace{100}_{\text{nb of players}} 
-\times \underbrace{85}_{\text{nb of players}} = 263500 \ \text{games}$$
+\times \underbrace{85}_{\text{nb of matches}} = 263500 \ \text{games}$$
 
 which is $\sim2.5$ times more than the previous dataset, but also much more diverse (100 players per division) and 
 cleanly selected (highly involved summoners only). This dataset is described and available in the 
