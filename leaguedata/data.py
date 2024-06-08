@@ -44,6 +44,30 @@ def get_tier_sorted() -> list:
     return tier_with_sub + ['MASTER', 'GRANDMASTER', 'CHALLENGER']
 
 
+def get_tier_batch() -> list:
+    """
+    Return batches of tiers in League of Legends, sorted from the lowest to the highest.
+    """
+
+    tier_list = ['IRON', 'BRONZE', 'SILVER', 'GOLD', 'PLATINUM', 'EMERALD', 'DIAMOND', 'MASTER', 'GRANDMASTER',
+                 'CHALLENGER']
+    division_list = ['I', 'II', 'III', 'IV'][::-1]
+    
+
+    for tier in tier_list:
+
+        tier_with_sub = []
+
+        if tier not in ['MASTER', 'GRANDMASTER', 'CHALLENGER']:
+            for division in division_list:
+                tier_with_sub.append(f'{tier}_{division}')
+                
+            yield tier_with_sub
+        
+        else:
+            yield [tier]
+
+
 def get_history_dict():
     """
     Return a two level dictionary containing the history of all players in the reference sample.
