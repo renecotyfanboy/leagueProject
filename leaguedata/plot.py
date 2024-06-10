@@ -97,7 +97,7 @@ def plot_compare_plotly(comp_df, save_to=None):
         y=yticks_pos[[int(x[0]) for x in diff_df.index]] + 0.6,
         error_x=dict(
             type='data', 
-            array=comp_df['dse'][1:], 
+            array=diff_df['dse'], 
             thickness=linewidth
         ),
         mode='markers+text',
