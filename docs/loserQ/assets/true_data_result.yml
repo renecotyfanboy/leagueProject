@@ -1,8 +1,8 @@
-Losing after losing_mean: 0.5061
-Losing after losing_std: 0.0017
-Losing after winning_mean: 0.4982
-Losing after winning_std: 0.0017
-Winning after losing_mean: 0.4939
-Winning after losing_std: 0.0017
-Winning after winning_mean: 0.5018
-Winning after winning_std: 0.0017
+lose_after_lose_mean: 0.5061
+lose_after_lose_std: 0.0017
+lose_after_win_mean: 0.4982
+lose_after_win_std: 0.0017
+win_after_lose_mean: 0.4939
+win_after_lose_std: 0.0017
+win_after_win_mean: 0.5018
+win_after_win_std: 0.0017
