@@ -12,7 +12,6 @@ nav:
     - loserQ/model.md
     - loserQ/validation.md
     - loserQ/true_data.md
-    - loserQ/conclusion.md
   - Around trueskill2:
     - trueskill2/introduction.md
   - Reference:

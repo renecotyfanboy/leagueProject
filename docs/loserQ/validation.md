@@ -264,6 +264,8 @@ Since the obvious LoserQ is a pure DTMC, we can also check the transition probab
 
 We observe we get back most of the input parameters. Some are a bit off, due to the sample variance. This comes from the fact that we work with a finite number of matches, which are generated from a random process. In this situation, some transitions (by pure luck) are a bit overrepresented or underrepresented, which can lead to a slight deviation in the posterior distribution. Adding a larger number of games would reduce this variance, but this is not necessary for the purpose of this project, since we showed that we can already find the good dynamic with a few games.
 
+To conclude on the validation, I'd say that this approach works pretty well on mock data, and only needs $\sim 34 000$ matches to show that something is happening or not. It can grasp random behaviour, and obvious or much more subtle mechanisms that would be challenging to see otherwise. When applied to the dataset of true matches, which is five times bigger, we will be able to figure out the best way to describe the history of matches with even more significance. 
+
 *[DTMC]: Discrete-time Markov Chain
 *[MCMC]: Markov Chain Monte Carlo
 *[NUTS]: No-U-Turn Sampler

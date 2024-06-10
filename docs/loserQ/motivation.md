@@ -69,6 +69,17 @@ Back in summer 2023, I posted on reddit [some hints](https://www.reddit.com/r/le
 
 The current analysis work was started on the 9 April 2024, and it took $\sim 2$ months of spare time here and there to get all the pieces together, provide this website with all the content, and get it reviewed by external people. It took that long because I wanted it to be reproducible, well documented and peer reviewed, unlike any other analysis I have seen. You'll find the dataset on [HuggingFace](https://huggingface.co/datasets/renecotyfanboy/leagueData), and the code on the associated [GitHub repository](https://github.com/renecotyfanboy/leagueProject). Anyone can reproduce the analysis and emits critics on the methodology, the results or the interpretation. I am open to any discussion, and I will update this website with the most relevant critics I receive.
 
+## What can I show or not?
+
+Riot might know perfectly the outcome of a match (even if I doubt it), and could use this information to match you with people that could make you lose. Doing so, they could imprison people in loops of wins and losses, which would make them play more, and therefore spend more money on the game. They could autofill you when desired, or use the almighty AI at Tencent to know what is the colour of your underwear. My goal here is to investigate this and see if there is any evidence of such a mechanism in the data. Don't get me wrong :
+
+1. I cannot show that Riot matches you with people that are already losing. This is too much recursive call to the API, and my poor personal API-key would take eons to gather what I require. Also, in general, I cannot predict the outcome of a game with the data I am gathering through the API (or at least, I can't gather enough data in low timescale). This is something I might have a look at when playing around the amazing `trueskill2` algorithm.
+2. I cannot write about in-game feeling. I don't care if games feel unwinnable or unlosable, only matter the results in terms of wins and losses. In particular, I cannot prove nor disprove that Riot has a perfect control over the outcome of games. But if they do, and if they make it deviate from randomness, I could see it in the dataset.
+3. I cannot disprove that players experience win or loss streaks, since this is happening. Especially in early seasons, when people are placed too high or too low, they will experience streaks of wins and losses, and this is expected since the algorithm is not perfect at predicting your level with a low game count, and it might get some time so that you reach your true rank. This is why I focus on players that are supposedly close to their true rank. The dataset contains the last 100 games of players that played at least 200 games in the first split of 2024, from which remakes are removed, leading to at least 85 games per player.
+
+However, there is a lot of stuff to do using the data from match histories. But, as I said in the reddit post, I cannot disprove the existence of the LoserQ. The best I can state is "if it exists indeed, it either work or not". We'll discuss it a bit more in the conclusion.
+
 *[EOMM]: Engagement Optimized Matchmaking
+
 [^1]: [**EOMM: An Engagement Optimized Matchmaking
 Framework**, *Chen & al.* (2017)](https://web.cs.ucla.edu/~yzsun/papers/WWW17Chen_EOMM] frameworks)

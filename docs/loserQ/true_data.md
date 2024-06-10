@@ -6,6 +6,8 @@
 
 ## Best-fit model 
 
+It's time to see what we obtain with our dataset of true matches. Let's fit our model and look at the ELDP-LOO comparison plot.
+
 <div class="grid cards" markdown>
 
 -   <p style='text-align: center;'> **Comparison of DTMC Models on True Data** </p>
@@ -146,6 +148,32 @@ We compute the autocorrelation for a simulated dataset and compare it to the aut
 {"file_path": "loserQ/assets/true_data_correlation.json"}
 ```
 
+Once again, we see that this quantity is well predicted by our best-fit DTMC model, while significant deviation from zero should be visible if there were an efficient LoserQ at act. However, the 1st order dynamic we showed is so low that it would have been hard to detect without using DTMC, which motivates a bit more this approach. 
+
+## Conclusion
+
+So, did we show that there is not LoserQ in League of Legend? Finally? At last? Well, no. In fact, it's impossible to establish that unicorns, dragons, and good smelling league players don't exist. This statement is true for a lot of other stuff including LoserQ. I ontologically cannot disprove the existence of without looking at the matchmaking source code. However, we can still get good interpretation from these results. What is shown here is that matches can be modelled very well by a DTMC which only needs the previous game to define its transitions. In short, using only win/loss information, the best way to predict the outcome of a player's match is to look at his last game. He will then have a $50.17 \pm 0.17\%$ chance of winning if his previous game was won, and $49.34 \pm 0.17 \%$ if his previous game was lost. This behaviour was confirmed by studying the series lengths or auto-correlation that such dynamics would induce, and comparing them with what is observed in the real data.
+
+I wouldn't interpret such low values as emerging from an engineered process to increase player involvement. If this is indeed the case, then Riot's competence is questionable, since the effect of this LoserQ would only be visible once or twice out of several hundred games. In general, it's healthier to come up with simpler, more reasoned interpretations when you're in this kind of situation. Typically, we know that players are more tilted after defeats[^1] and that players' tilt reduces their overvall probability to win[^2][^3][^4]. This elementary explanation isn't necessarily the right one, but given that it's simple, it should be favoured until proven otherwise. In the end, even using a more robust methodology and better quality data, we still find the same results as those I presented in 2023 on reddit.
+
+!!! tip "Takeaways"
+    Players lower their win rate by $0.7 \pm 0.2 \%$ after a loss and increase it by $0.2 \pm 0.2 \%$ after a win. This is a significant deviation from randomness, but you can see its effect once or twice for hundreds of games players.
+    In this situation, either LoserQ does not exist, or if it exists, it is really ineffective. 
+
+??? danger "Why people would still believe in LoserQ?"
+
+    - Being placed too low/high early in the season, leading to large wins/losses streak until the hidden elo stabilize
+    - Under damped MMR system, where the official rank would be much faster to move than the hidden elo
+    - Confirmation bias, as many people think they notice patterns in the player they are matched with 
+    - Coping, as lower players tend to overestimate their own skill and think they are held back by the matchmaking
+    - And many other reasons I guess
+
 *[ELPD]: Expected log predictive density
 *[LOO]: Leave One Out
 *[DTMC]: Discrete-time Markov Chain
+
+[^1]: [**Analyzing the changes in the psychological profile of professional League of Legends players during competition**, *Mateo-Orcajada & al* (2022)](https://www.sciencedirect.com/science/article/abs/pii/S0747563221003538)
+[^2]: [**Understanding Tilt in Esports: A Study on Young League of Legends Players**, *Wu & Lee* (2021)](https://dl.acm.org/doi/abs/10.1145/3411764.3445143)
+[^3]: [**Exploring Stress in Esports Gaming: Physiological and Data-driven approach on Tilt**, *Lee* (2021)](https://escholarship.org/content/qt61p8c951/qt61p8c951.pdf)
+[^4]: [**Effects of individual toxic behavior on team performance in League of Legends**, *Monge & O'Brien* (2017)](https://www.tandfonline.com/doi/abs/10.1080/15213269.2020.1868322)
+[^5]: [**The psychology of esports players’ ELO Hell: Motivated bias in League of Legends and its impact on players’ overestimation of skill**, *Aeschbach & al* (2023)](https://www.sciencedirect.com/science/article/pii/S0747563223001796)
