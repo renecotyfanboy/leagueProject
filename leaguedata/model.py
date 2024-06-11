@@ -1,5 +1,6 @@
 import jax.random
 import numpy as np
+import yaml
 import jax.numpy as jnp
 import numpyro.distributions as dist
 from jax.random import PRNGKey
@@ -278,9 +279,21 @@ def generate_simulation_from_best_fit(number_of_games=85, number_of_players=200,
     markov = DTMCModel(1)
     keys = jax.random.split(key, 2)
 
-    win_from_loss = np.random.normal(49.81/100, 0.14/100, size=number_of_players)
-    win_from_win = np.random.normal(50.54/100, 0.14/100, size=number_of_players)
-
+    with open('docs/loserQ/assets/true_data_result.yml', 'r') as file:
+        dict_of_results = yaml.safe_load(file)
+    
+    win_from_loss = np.random.normal(
+        dict_of_results["win_after_lose_mean"], 
+        dict_of_results["win_after_lose_std"], 
+        size=number_of_players
+    )
+    
+    win_from_win = np.random.normal(        
+        dict_of_results["win_after_win_mean"], 
+        dict_of_results["win_after_win_std"], 
+        size=number_of_players
+    )
+    
     def single_history(key, win_from_loss, win_from_win, number_of_games):
         probs = jnp.empty((2,))
 

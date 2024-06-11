@@ -1,8 +1,8 @@
-lose_after_lose_mean: 0.5061289136080884
-lose_after_lose_std: 0.0017126034286061456
-lose_after_win_mean: 0.4981887464637871
-lose_after_win_std: 0.0016611256671016778
-win_after_lose_mean: 0.49387108639191163
-win_after_lose_std: 0.0017126034286061445
-win_after_win_mean: 0.5018112535362129
-win_after_win_std: 0.0016611256671016784
+lose_after_lose_mean: 0.506044960247684
+lose_after_lose_std: 0.0016983710493189987
+lose_after_win_mean: 0.4987781094689353
+lose_after_win_std: 0.0016535916796821502
+win_after_lose_mean: 0.493955039752316
+win_after_lose_std: 0.0016983710493189994
+win_after_win_mean: 0.5012218905310647
+win_after_win_std: 0.0016535916796821507
