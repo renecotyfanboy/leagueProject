@@ -13,7 +13,7 @@ It's time to see what we obtain with our dataset of true matches. Let's fit our 
 -   <p style='text-align: center;'> **Comparison of DTMC Models on True Data** </p>
 
     ``` plotly
-    {"file_path": "loserQ/assets/true_data_compare_results.json"}
+    {"file_path": "loserQ/assets/true_data_compare_results_balanced.json"}
     ```
     
     <p style='text-align: justify; width: 80%; margin-left: auto; margin-right: auto;'>
@@ -51,7 +51,7 @@ The previous comparison shows that the best model to describe the history we obs
 
 </div>
 
-These posterior distributions are clearly Gaussian and can be interpreted pretty easily. With this dataset, you get a probability of winning the next game of $50.54\% \pm 0.14 \%$ if the previous is a win, and a probability of losing the next game of $50.19\% \pm 0.14 \%$ if the previous is a loss. There is a small but significant difference between the two, which is consistent with the hypothesis that the outcome of a game is not completely independent of the previous. 
+The first thing that stands out is that the parameters are very well constrained. These posterior distributions are clearly Gaussian and can be interpreted pretty easily. With this dataset, you get a probability of winning the next game of $({{"{:,.2f}".format((100*true_data.win_after_win_mean)| abs)}} \pm {{"{:,.2f}".format(100*true_data.win_after_win_std)}}) \%$ if the previous is a win, and a probability of losing the next game of $({{"{:,.2f}".format((100*true_data.lose_after_lose_mean)| abs)}} \pm {{"{:,.2f}".format(100*true_data.lose_after_lose_std)}}) \%$ if the previous is a loss. There is a small but significant difference between the two, which is consistent with the hypothesis that the outcome of a game is not completely independent of the previous. 
 
 ## Streak lengths
 
@@ -74,7 +74,7 @@ This kind of looks like the results I got in my previous post, and that there ar
 
 1.  <div class="tenor-gif-embed" data-postid="27295909" data-share-method="host" data-aspect-ratio="1.77778" data-width="100%"><a href="https://tenor.com/view/%C3%A7a-fait-beaucoup-la-non-gif-27295909">ça Fait Beaucoup La Non GIF</a>from <a href="https://tenor.com/search/%C3%A7a+fait+beaucoup+la+non-gifs">ça Fait Beaucoup La Non GIFs</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
 
-In the next graph, I simulate 1000 datasets and compute the streak lengths for each of them to propagate the uncertainties coming from the sample variance and the model. I do the same for the obvious LoserQ model I used in the validation to show what we would expect in this case.
+In the next graph, I simulate 100 datasets and compute the streak lengths for each of them to propagate the uncertainties coming from the sample variance and the model. I do the same for the obvious LoserQ model I used in the validation to show what we would expect in this case.
 
 <div class="grid cards" markdown>
 
@@ -92,7 +92,7 @@ In the next graph, I simulate 1000 datasets and compute the streak lengths for e
 
 </div>
 
-As the last time, the real data is consistent with the simulated data, which is hinted by the fact that the real data falls between the $95\%$ confidence interval of the simulated data. This is a good sign that the streak lengths we observe in our dataset are consistent with what you would expect from random coin flips. We can see some tensions in the most extreme streaks, (for the 2 players in the dataset that lost 16 games in a row, for example). This could point to external factors, e.g. mental boom, boosting, etc. but certainly not LoserQ since this is far too marginal.
+As the last time, the real data is consistent with the simulated data. This is indicated by the fact that the real data falls between the $95\%$ confidence interval of the simulated data. This means that the streak lengths we see in the player dataset are compatible with what we expect from the best-fit model. 
 
 ## Auto-correlation
 
@@ -152,20 +152,19 @@ Once again, we see that this quantity is well predicted by our best-fit DTMC mod
 
 ## Conclusion
 
-So, did we show that there is not LoserQ in League of Legend? Finally? At last? Well, no. In fact, it's impossible to establish that unicorns, dragons, and good smelling league players don't exist. This statement is true for a lot of other stuff including LoserQ. I ontologically cannot disprove the existence of without looking at the matchmaking source code. However, we can still get good interpretation from these results. What is shown here is that matches can be modelled very well by a DTMC which only needs the previous game to define its transitions. In short, using only win/loss information, the best way to predict the outcome of a player's match is to look at his last game. He will then have a $50.17 \pm 0.17\%$ chance of winning if his previous game was won, and $49.34 \pm 0.17 \%$ if his previous game was lost. This behaviour was confirmed by studying the series lengths or auto-correlation that such dynamics would induce, and comparing them with what is observed in the real data.
+So, did we show that there is not LoserQ in League of Legend? Finally? At last? Well, no. In fact, it's impossible to establish that unicorns, dragons, and good smelling league players don't exist. This statement is true for a lot of other stuff including LoserQ. I ontologically cannot disprove the existence of without looking at the matchmaking source code. However, we can still get good interpretation from these results. What is shown here is that matches can be modelled very well by a DTMC which only needs the previous game to define its transitions. In short, using only win/loss information, the best way to predict the outcome of a player's match is to look at his last game. He will then have a $({{"{:,.2f}".format((100*true_data.win_after_win_mean)| abs)}} \pm {{"{:,.2f}".format(100*true_data.win_after_win_std)}}) \%$  chance of winning if his previous game was won, and $({{"{:,.2f}".format((100*true_data.win_after_lose_mean)| abs)}} \pm {{"{:,.2f}".format(100*true_data.win_after_lose_std)}}) \%$ if his previous game was lost. This behaviour was confirmed by studying the series lengths or auto-correlation that such dynamics would induce, and comparing them with what is observed in the real data.
 
 I wouldn't interpret such low values as emerging from an engineered process to increase player involvement. If this is indeed the case, then Riot's competence is questionable, since the effect of this LoserQ would only be visible once or twice out of several hundred games. In general, it's healthier to come up with simpler, more reasoned interpretations when you're in this kind of situation. Typically, we know that players are more tilted after defeats[^1] and that players' tilt reduces their overvall probability to win[^2][^3][^4]. This elementary explanation isn't necessarily the right one, but given that it's simple, it should be favoured until proven otherwise. In the end, even using a more robust methodology and better quality data, we still find the same results as those I presented in 2023 on reddit.
 
 !!! tip "Takeaways"
-    Players lower their win rate by $0.7 \pm 0.2 \%$ after a loss and increase it by $0.2 \pm 0.2 \%$ after a win. This is a significant deviation from randomness, but you can see its effect once or twice for hundreds of games players.
-    In this situation, either LoserQ does not exist, or if it exists, it is really ineffective. 
+    Players lower their win rate to $({{"{:,.2f}".format((100*true_data.win_after_lose_mean - 50)| abs)}} \pm {{"{:,.2f}".format(100*true_data.win_after_lose_std)}}) \%$ after a loss and increase it by $({{"{:,.2f}".format((100*true_data.win_after_win_mean - 50)| abs)}} \pm {{"{:,.2f}".format(100*true_data.win_after_win_std)}}) \%$ after a win. This is a significant deviation from randomness, but you can see its effect once or twice for hundreds of games players. In this situation, either LoserQ does not exist, or if it exists, it is really ineffective. 
 
 ??? danger "Why people would still believe in LoserQ?"
 
     - Being placed too low/high early in the season, leading to large wins/losses streak until the hidden elo stabilize
     - Under damped MMR system, where the official rank would be much faster to move than the hidden elo
     - Confirmation bias, as many people think they notice patterns in the player they are matched with 
-    - Coping, as lower players tend to overestimate their own skill and think they are held back by the matchmaking
+    - Coping, as lower players tend to overestimate their own skill and think they are held back by the matchmaking[^5]
     - And many other reasons I guess
 
 *[ELPD]: Expected log predictive density

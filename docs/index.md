@@ -8,4 +8,3 @@ both friends and strangers to criticize it. Here are the people who contributed 
 - [renecotyfanboy](https://www.reddit.com/user/renecotyfanboy/), Simon Dupourqué (PhD) in real life : the author of this 
 website, and the one who did all the analysis. Currently working in an astrophysic postdoc at 
 [IRAP](https://www.irap.omp.eu/) in Toulouse.
-

@@ -59,7 +59,7 @@ plugins:
   - typeset
   - macros:
       include_yaml:
-        - streak : docs/loserQ/assets/streak_results.yml
+        - true_data : docs/loserQ/assets/true_data_result.yml
   - plotly:
       lib_path: javascripts/plotly-2.32.0.js
       template_slate: plotly_dark
