@@ -7,10 +7,11 @@
 
 ## Generating mock data
 
-The previous page was an exhaustive description of the model I chose to describe the history of games in League of Legends. When trying to assess stuff with mathematical models, it is always good to check if the methodology works on mock data. To accomplish this, I will show that this methodology can recover the parameters of two simulated samples.
+The previous page was an exhaustive description of the model I chose to describe the history of games in League of Legends. When trying to assess stuff with mathematical models, it is always good to check if the methodology works on mock data. To accomplish this, I will show that this methodology can recover the parameters of three simulated samples.
 
-1. A simulation where there is an obvious LoserQ mechanism, where your probability of winning is linked to the four-previous game you played. 
-2. A simulation where there is a nasty LoserQ mechanism, where most of the players would not see significant patterns, while some would be cursed by long streaks of wins and losses.
+1. A pure coinflip simulation.
+2. A simulation where there is an obvious LoserQ mechanism, where your probability of winning is linked to the four-previous game you played. 
+3. A simulation where there is a nasty LoserQ mechanism, where most of the players would not see significant patterns, while some would be cursed by long streaks of wins and losses.
 
 The probability of winning the next game is linked to the win rate of the four previous games (4-order DTMC), the values are highlighted in the following table.
 
@@ -98,13 +99,13 @@ The probability of winning the next game is linked to the win rate of the four p
 
 ## Practical implementation
 
-So, as a summary of the theory section,  the whole idea would be to recover the underlying dynamics from a given set of match history. To achieve this, my take is to determine the best transition probabilities for a given DTMC using MCMC methods. By determining these probabilities for various DTMC with increasing memory size, we obtain best-fit models for the underlying dynamics. By comparing these models using ELDP-LOO, we can determine the best model to describe the history of games. 
+So, as a summary of the theory section, the whole idea would be to recover the underlying dynamics from a given set of match history. To achieve this, my take is to determine the best transition probabilities for a given DTMC using MCMC methods. By determining these probabilities for various DTMC with increasing memory size, we obtain best-fit models for the underlying dynamics. By comparing these models using ELDP-LOO, we can determine the best model to describe the history of games. 
 
-In practice, I'll determine the transition probabilities for DTMC with memory size $1$ to $6$. We sample these posterior distributions using the NUTS sampler as implemented in the `numpyro` library. Then, I compare these models using the comparator implemented in the `arviz` library. All the code is available on the [Github repository](https://github.com/renecotyfanboy/leagueProject), and the API of the helper package I wrote is detailed in the [documentation](../api/data.md). As a mock dataset, I generated 85 games for 100 players, and applied the aforementioned methodology for both the obvious and nasty LoserQ mechanisms. Most of the computations were performed either on the [SSP Cloud data](https://datalab.sspcloud.fr/), which nicely and freely provides GPUs to Fr*nch academics, or on my personal computer.
+In practice, I'll determine the transition probabilities for DTMC with memory size $1$ to $6$. We sample these posterior distributions using the NUTS sampler as implemented in the `numpyro` library. Then, I compare these models using the comparator implemented in the `arviz` library. All the code is available on the [Github repository](https://github.com/renecotyfanboy/leagueProject), and the API of the helper package I wrote is detailed in the [documentation](../api/data.md). As a mock dataset, I generated 85 games for 400 players, and applied the aforementioned methodology for both the obvious and nasty LoserQ mechanisms. Such a number of games is equivalent to taking a single division in the dataset, such as Bronze or Gold, in terms of observed data. Most of the computations were performed either on the [SSP Cloud data](https://datalab.sspcloud.fr/), which nicely and freely provides GPUs to Fr*nch academics, or on my personal computer.
 
 ## Assessing the performance
 
-Let's first observe the comparator plot for the two simulated datasets. We will discuss a bit on how to interpret them.
+Let's first observe the comparator plot for the three simulated datasets. We will discuss a bit on how to interpret them.
 
 === "Coinflip history"
 
@@ -142,7 +143,7 @@ Let's first observe the comparator plot for the two simulated datasets. We will 
 
     </div>
 
-This graph contains the ELDP computed for the various memory sizes, along with the difference with the best ELDP. Plotting these two helps when comparing the models and see which are compatible with the best one. We can see first that the higher ELDP models in our comparator are the 4-order models. This is great, since this is the memory I used to generate the mock data. For the obvious LoserQ, we see that the 5-order model is also a contender for the first place. Since the true input is a 4-order dynamics, a 5-order dynamics can also reproduce the observed histories, but with lower ELDP since it overfit the data a bit. Same comment for the 6-order model. For the nasty LoserQ, we see that the 4-order model is also the best, and that the 2-order is the second best. This is pretty interesting, since this mechanism was designed to be challenging to detect, and should be disguised as a lower order dynamic for the people who are not violently cursed. 
+This graph contains the ELDP computed for the various memory sizes, along with the difference with the best ELDP. Plotting these two helps when comparing the models and see which are compatible with the best one. First, we observe that the 0 order DTMC is the best model to describe our coinflip dataset, which is great since 0 order DTMC is basically a coinflip too. We can see for the two others that the higher ELDP models in our comparator are the 4-order models. This is great, since this is the memory I used to generate the mock LoserQs. For the obvious LoserQ, we see that the 5-order model is also a contender for the first place. Since the true input is a 4-order dynamics, a 5-order dynamics can also reproduce the observed histories, but with lower ELDP since it overfit the data a bit. Same comment for the 6-order model. For the nasty LoserQ, we see that the 4-order model is also the best, and that the 2-order is the second best. This is pretty interesting, since this mechanism was designed to be challenging to detect, and should be disguised as a lower order dynamic for the people who are not violently cursed. 
 
 Since the obvious LoserQ is a pure DTMC, we can also check the transition probabilities we recovered for the best model and check that they are close to the one I used to run the simulations. This is what I show in the following plots, where we see that our posterior distributions (in green) are coincident with the true values (in grey).
 
