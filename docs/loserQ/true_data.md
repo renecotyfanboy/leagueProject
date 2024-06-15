@@ -1,8 +1,9 @@
 # Application to true data
 
 !!! abstract "TL;DR"
-    - When applied to true data, the best model to describe the history of games is a 1st order DTMC, where the outcome of a game *weakly* depends on the previous game.
-    - We show that this model is performant at describing the expected correlations, streak lengths and others 
+    - When applied to true data, the best model to describe the history of games is a 1st order DTMC.
+    - Matches in dataset shows weak but statistically significant correlation with the previous game
+    - The best-fit model is performant at describing the observed streak lengths distribution and auto-correlation
 
 ## Best-fit model 
 
@@ -55,8 +56,7 @@ The first thing that stands out is that the parameters are very well constrained
 
 ## Streak lengths
 
-To check whether our best fit model is indeed descriptive of our data or not, we can perform what is called posterior predictive checks. This is a simple procedure where you generate a lot of data using the best fit model, and compare the distribution of the observables to the real data. This is a good way to check if the model can reproduce the data. One issue we have with directly comparing the true game history to the model is that it is challenging to compare two random processes directly. Imagine you have to compare two series of coin flips, checking one by one if the outcomes are the same is a nonsense since this is stochastic. However, you can easily compare averaged quantities, such as the mean of the two series, their standard deviation etc. In the following, I compare the distribution of streak lengths from the true dataset to what we expected to measure using the best-fit model. Below is the distribution of streak lengths in our true dataset of match histories. 
-
+To check whether our best-fit model actually describes our data, we can perform what is called a posterior predictive check. This is a simple procedure where you generate a lot of data using the best-fit model and compare the distribution of the observables with the real data. This is a good way of checking that the model can reproduce the observed data. One problem we have with directly comparing the true histories with the model is that it is difficult to compare two random processes directly. Imagine you have to compare two series of coin tosses, checking each one to see if the results are the same is nonsense because it is stochastic. However, you can easily compare averaged quantities, such as the mean of the two series, their standard deviation, etc. Below I compare the distribution of streak lengths from the real data set with what we expected to measure using the best-fit model. Below is the distribution of streak lengths in our true dataset of match histories. 
 <div class="grid cards" markdown>
 
 -   <p style='text-align: center;'> **Streak length distribution** </p>
@@ -78,7 +78,7 @@ In the next graph, I simulate 100 datasets and compute the streak lengths for ea
 
 <div class="grid cards" markdown>
 
--   <p style='text-align: center;'> **Streak length distribution** </p>
+-   <p style='text-align: center;'> **Streak length distribution in the dataset compared to prediction** </p>
     ``` plotly
     {"file_path": "loserQ/assets/mock_streak_histogram_win.json"}
     ```
@@ -104,9 +104,14 @@ $$
 
 This is the measure of the average of the product between two games that are $k$ games apart. If the sequence is random, then the auto-correlation should be close to 0. If the sequence is *positively*-correlated (if you win a game, you have more chance to win the game after $k$ other ones), then the auto-correlation should be close to 1. Conversely, if the sequence is *negatively*-correlated (if you win a game, you have more chance to lose the game after $k$ other ones), then the auto-correlation should be close to -1. The following graph shows the auto-correlation of a sequence of games, where the outcome of a game depends on the previous game only. 
 
-``` plotly
-{"file_path": "loserQ/assets/simulated_correlation.json"}
-```
+<div class="grid cards" markdown>
+
+-   <p style='text-align: center;'> **Interpretation of auto-correlation** </p>
+    ``` plotly
+    {"file_path": "loserQ/assets/simulated_correlation.json"}
+    ```
+
+</div>
 
 ??? note 
     The graph of the DTMC model used to draw the previous plot are the following : 
@@ -142,11 +147,16 @@ This is the measure of the average of the product between two games that are $k$
 
     </div>
 
-We compute the autocorrelation for a simulated dataset and compare it to the autocorrelation of the true dataset. The bands represent the 95% spread of autocorrelation within the simulated dataset, and we overlap samples from the true dataset to show that it is consistent. We also add the autocorrelation of the obvious LoserQ model to show that we would expect higher values up to a lag of 4, which is the order of the underlying DTMC model. 
+We compute the auto-correlation for a simulated dataset produced using the best-fit model and compare it to the auto-correlation of the true dataset. The bands represent the 95% spread of auto-correlation within the simulated dataset, and we overlap samples from the true dataset to show that it is consistent. We also add the auto-correlation of the obvious LoserQ model to show that we would expect higher values up to a lag of 4, which is the order of the underlying DTMC model. 
 
-``` plotly
-{"file_path": "loserQ/assets/true_data_correlation.json"}
-```
+<div class="grid cards" markdown>
+
+-   <p style='text-align: center;'> **Auto-correlation in the dataset compared to prediction** </p>
+    ``` plotly
+    {"file_path": "loserQ/assets/true_data_correlation.json"}
+    ```
+
+</div>
 
 Once again, we see that this quantity is well predicted by our best-fit DTMC model, while significant deviation from zero should be visible if there were an efficient LoserQ at act. However, the 1st order dynamic we showed is so low that it would have been hard to detect without using DTMC, which motivates a bit more this approach. 
 
