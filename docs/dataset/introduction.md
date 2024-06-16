@@ -19,9 +19,12 @@ in SoloQ for each of these players.
 
 1. ![La source](https://risibank.fr/cache/medias/0/14/1420/142061/full.png){ align=left }
 
-Let's explore a bit our dataset. In the next plot, I show the winrate of players in each division. The winrate is 
-computed using the history list of each player.
+The following plot show the winrate of players in each division.
 
-```plotly
-{"file_path": "dataset/assets/winrate_over_division.json"}
-```
+<div class="grid cards" markdown>
+
+-   <p style='text-align: center;'> **Winrate per division** </p>
+    ``` plotly
+    {"file_path": "dataset/assets/winrate_over_division.json"}
+    ```
+</div>
