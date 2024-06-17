@@ -117,6 +117,9 @@ markdown_extensions:
   - pymdownx.arithmatex:
       generic: true
 
+repo_url: https://github.com/renecotyfanboy/leagueProject
+repo_name: leagueProject
+
 extra_javascript:
   - javascripts/katex.js
   - https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.js

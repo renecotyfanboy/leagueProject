@@ -4,7 +4,7 @@ This website is a collection of stuff I did around data science and League of Le
 
 ??? tip "LoserQ Infographic"
 
-    ![LoserQ Infrographic](assets/loserq_infrographic.png)
+    ![LoserQ Infrographic](assets/loserq_infographic.png)
 
 ## Who worked on this ?
 
