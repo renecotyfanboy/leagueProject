@@ -2,6 +2,10 @@
 
 This website is a collection of stuff I did around data science and League of Legends. At this time, it is mainly focused on the analysis I did around the (non)-existence of the LoserQ mechanism. As we would say in France, this work is "fait avec soin par mes petites mains", but I did my best to get a (close to) peer reviewing process by asking both friends and strangers to criticize it.
 
+??? tip "LoserQ Infographic"
+
+    ![LoserQ Infrographic](assets/loserq_infrographic.png)
+
 ## Who worked on this ?
 
 - [renecotyfanboy](https://www.reddit.com/user/renecotyfanboy/), (Simon Dupourqué, PhD) : the author of this work. Working on statistical inference for X-ray and for turbulence in galaxy clusters.
