@@ -14,7 +14,7 @@ nav:
     - loserQ/true_data.md
   - Around trueskill2:
     - trueskill2/introduction.md
-  - Reference:
+  - API reference:
     - data : api/data.md
     - model : api/model.md
     - inference : api/inference.md

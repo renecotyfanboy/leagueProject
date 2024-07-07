@@ -1,19 +1,19 @@
 # Validating the approach
 
 !!! abstract "TL;DR"
-    - I want to validate this methodology using mock data to show its ability to identify dynamics in match histories.
-    - I propose two kinds of simulations to do this : an obvious LoserQ mechanism and a nasty LoserQ
-    - I show that the methodology can accurately recover arbitrary dynamics with a relatively small number of games ($\lesssim 35000$) for both the obvious and nasty mock LoserQ mechanism.
+    - I would like to validate this methodology using mock data to show its ability to identify dynamics in game histories.
+    - I propose two types of simulations to do this: an obvious LoserQ mechanism and a nasty LoserQ mechanism.
+    - I show that the methodology can accurately recover arbitrary dynamics with a relatively small number of games ($\lesssim 35000$) for both the obvious and the nasty mock LoserQ mechanism.
 
 ## Generating mock data
 
-The previous page was an exhaustive description of the model I chose to describe the history of games in League of Legends. When trying to assess stuff with mathematical models, it is always good to check if the methodology works on mock data. To accomplish this, I will show that this methodology can recover the parameters of three simulated samples.
+The previous page was an exhaustive description of the model I chose to describe the history of games in League of Legends. When trying to evaluate things with mathematical models, it is always good to check if the methodology works on simulated data. To do this, I will show that this methodology can recover the parameters of three simulated samples.
 
-1. A pure coinflip simulation.
-2. A simulation where there is an obvious LoserQ mechanism, where your probability of winning is linked to the four-previous game you played. 
-3. A simulation where there is a nasty LoserQ mechanism, where most of the players would not see significant patterns, while some would be cursed by long streaks of wins and losses.
+1. A pure coin flip simulation.
+2. A simulation where there is an obvious LoserQ mechanism, where your probability of winning is linked to the four previous games you have played. 
+3. A simulation where there is a nasty LoserQ mechanism, where most players would not see significant patterns, while some would be cursed by long streaks of wins and losses.
 
-The probability of winning the next game is linked to the win rate of the four previous games (4-order DTMC), the values are highlighted in the following table.
+The probability of winning the next game is linked to the winning rate of the previous four games (4-order DTMC), the values are highlighted in the table below.
 
 ??? info "Transition probabilities for mock LoserQ mechanisms"
 
@@ -99,13 +99,13 @@ The probability of winning the next game is linked to the win rate of the four p
 
 ## Practical implementation
 
-So, as a summary of the theory section, the whole idea would be to recover the underlying dynamics from a given set of match history. To achieve this, my take is to determine the best transition probabilities for a given DTMC using MCMC methods. By determining these probabilities for various DTMC with increasing memory size, we obtain best-fit models for the underlying dynamics. By comparing these models using ELDP-LOO, we can determine the best model to describe the history of games. 
+So, to summarise the theory section, the whole idea would be to recover the underlying dynamics from a given set of game histories. To achieve this, my approach is to determine the best transition probabilities for a given DTMC using MCMC methods. By determining these probabilities for different DTMCs with increasing memory size, we obtain best-fit models for the underlying dynamics. By comparing these models using ELDP-LOO, we can determine the best model to describe the history of the games. 
 
-In practice, I'll determine the transition probabilities for DTMC with memory size $1$ to $6$. We sample these posterior distributions using the NUTS sampler as implemented in the `numpyro` library. Then, I compare these models using the comparator implemented in the `arviz` library. All the code is available on the [Github repository](https://github.com/renecotyfanboy/leagueProject), and the API of the helper package I wrote is detailed in the [documentation](../api/data.md). As a mock dataset, I generated 85 games for 400 players, and applied the aforementioned methodology for both the obvious and nasty LoserQ mechanisms. Such a number of games is equivalent to taking a single division in the dataset, such as Bronze or Gold, in terms of observed data. Most of the computations were performed either on the [SSP Cloud data](https://datalab.sspcloud.fr/), which nicely and freely provides GPUs to Fr*nch academics, or on my personal computer.
+In practice, I'll be determining the transition probabilities for DTMC with memory sizes $1$ to $6$. We sample these posterior distributions using the NUTS sampler implemented in the `numpyro` library. I then compare these models using the comparator implemented in the `arviz` library. All the code is available on the [Github repository](https://github.com/renecotyfanboy/leagueProject), and the API of the helper package I wrote is detailed in the [documentation](../api/data.md). As a dummy dataset, I generated 85 games for 400 players, using the above methodology for both the obvious and the nasty LoserQ mechanisms. Such a number of games is equivalent to a single division in the dataset, such as Bronze or Gold, in terms of observed data. Most of the computations were done either on the [SSP Cloud data](https://datalab.sspcloud.fr/), which kindly and freely provides GPUs to Fr*nch academics, or on my personal computer.
 
 ## Assessing the performance
 
-Let's first observe the comparator plot for the three simulated datasets. We will discuss a bit on how to interpret them.
+Let's first look at the comparator plot for the three simulated data sets. We will discuss how to interpret them.
 
 === "Coinflip history"
 
@@ -143,9 +143,9 @@ Let's first observe the comparator plot for the three simulated datasets. We wil
 
     </div>
 
-This graph contains the ELDP computed for the various memory sizes, along with the difference with the best ELDP. Plotting these two helps when comparing the models and see which are compatible with the best one. First, we observe that the 0 order DTMC is the best model to describe our coinflip dataset, which is great since 0 order DTMC is basically a coinflip too. We can see for the two others that the higher ELDP models in our comparator are the 4-order models. This is great, since this is the memory I used to generate the mock LoserQs. For the obvious LoserQ, we see that the 5-order model is also a contender for the first place. Since the true input is a 4-order dynamics, a 5-order dynamics can also reproduce the observed histories, but with lower ELDP since it overfit the data a bit. Same comment for the 6-order model. For the nasty LoserQ, we see that the 4-order model is also the best, and that the 2-order is the second best. This is pretty interesting, since this mechanism was designed to be challenging to detect, and should be disguised as a lower order dynamic for the people who are not violently cursed. 
+This graph shows the ELDP calculated for different memory sizes, along with the difference to the best ELDP. Plotting these two helps to compare the models and see which are compatible with the best. First we see that the 0-order DTMC is the best model to describe our coinflip dataset, which is great because 0-order DTMC is basically a coinflip too. For the other two, we can see that the higher ELDP models in our comparator are the 4 order models. This is great because this is the memory size I used to generate the fake LoserQs. For the obvious LoserQ we see that the 5-order model is also a contender for first place. Since the true input is a 4-order dynamics, a 5-order dynamics can also reproduce the observed histories, but with lower ELDP since it overfits the data a bit. Same for the 6th order model. For the nasty LoserQ, we see that the 4-order model is also the best, and that the 2-order is the second best. This is quite interesting, since this mechanism is designed to be difficult to detect, and should be disguised as a lower order dynamic for the people who are not violently cursed. 
 
-Since the obvious LoserQ is a pure DTMC, we can also check the transition probabilities we recovered for the best model and check that they are close to the one I used to run the simulations. This is what I show in the following plots, where we see that our posterior distributions (in green) are coincident with the true values (in grey).
+Since the apparent LoserQ is a pure DTMC, we can also check the transition probabilities we obtained for the best model and see if they are close to the one I used to run the simulations. I show this in the following plots, where we see that our posterior distributions (in green) agree with the true values (in grey).
 
 === "Transitions (i)"
     <div class="grid cards" markdown>
@@ -263,9 +263,9 @@ Since the obvious LoserQ is a pure DTMC, we can also check the transition probab
 
     </div>
 
-We observe we get back most of the input parameters. Some are a bit off, due to the sample variance. This comes from the fact that we work with a finite number of matches, which are generated from a random process. In this situation, some transitions (by pure luck) are a bit overrepresented or underrepresented, which can lead to a slight deviation in the posterior distribution. Adding a larger number of games would reduce this variance, but this is not necessary for the purpose of this project, since we showed that we can already find the good dynamic with a few games.
+We find that we get most of the input parameters back. Some of them are a bit off due to the sampling variance. This is because we are working with a finite number of matches, generated by a random process. In this situation, some transitions are (by pure luck) slightly over- or under-represented, which can lead to a slight deviation in the posterior distribution. Adding a larger number of games would reduce this variance, but this is not necessary for the purposes of this project, since we have shown that we can find the good dynamics with just a few games.
 
-To conclude on the validation, I'd say that this approach works pretty well on mock data, and only needs $\sim 34 000$ matches to show that something is happening or not. It can grasp random behaviour, and obvious or much more subtle mechanisms that would be challenging to see otherwise. When applied to the dataset of true matches, which is five times bigger, we will be able to figure out the best way to describe the history of matches with even more significance. 
+To conclude on validation, I'd say that this approach works pretty well on dummy data, and only needs $\sim 34 000$ matches to show that something is happening or not. It can catch random behaviour and obvious or much more subtle mechanisms that would otherwise be difficult to see. When we apply it to the dataset of real matches, which is five times larger, we will be able to find the best way to describe the history of matches with even more confidence. 
 
 *[DTMC]: Discrete-time Markov Chain
 *[MCMC]: Markov Chain Monte Carlo
