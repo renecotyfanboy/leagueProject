@@ -23,7 +23,7 @@ The probability of winning the next game is linked to the winning rate of the pr
     | $25\%$                           | $50\% - I\times 12.5\%$          |
     | $50\%$                           | $50\%$                           |
     | $75\%$                           | $50\% + I\times 12.5\%$          |
-    | $100\%$                          | $75\% + I\times 37.5\%$          |
+    | $100\%$                          | $50\% + I\times 37.5\%$          |
 
     - $I = 0.5$ for the obvious LoserQ, enabling considerable streaks occurring for everyone.
     - $I$ is drawn from a $\beta$ random variable $\alpha = 1.2$ and $\beta=10$ for the nasty LoserQ, so that most of the players would experience no significant pattern, but some would be cursed by long streaks of wins and losses.
