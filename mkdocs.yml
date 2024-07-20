@@ -52,6 +52,7 @@ theme:
     - content.code.annotate
     - content.code.copy
     - content.tooltips
+    - navigation.footer
 
 plugins:
   - search
@@ -130,7 +131,16 @@ extra_css:
   - css/material.css
 
 extra:
-  generator: false
+  generator: true
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/renecotyfanboy
+    - icon: fontawesome/brands/reddit
+      link: https://www.reddit.com/user/renecotyfanboy/
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/ReneCotyFanboy
+
+copyright: This project isn't endorsed by Riot Games.
 
 #extra_css:
 #  - css/material.css
