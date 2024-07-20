@@ -1,0 +1,738 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="https://renecotyfanboy.github.io/leagueProject/loserQ/true_data/" rel="canonical"/>
+<link href="../validation/" rel="prev"/>
+<link href="../../trueskill2/introduction/" rel="next"/>
+<link href="../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.0, mkdocs-material-9.5.29+insiders-4.53.11" name="generator"/>
+<title>Application to true data - LeagueProject</title>
+<link href="../../assets/stylesheets/main.cc8ffde5.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../assets/_mkdocstrings.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.css" rel="stylesheet"/>
+<link href="../../css/material.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script src="../../assets/javascripts/plotly.min.js"></script> <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
+<body data-md-color-accent="indigo" data-md-color-primary="purple" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#application-to-true-data">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="LeagueProject" class="md-header__button md-logo" data-md-component="logo" href="../.." title="LeagueProject">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m1.912 0 1.212 2.474v19.053L1.912 24h14.73l1.337-4.682H8.33V0ZM12 1.516c-.913 0-1.798.112-2.648.312v1.74A9.738 9.738 0 0 1 12 3.2c5.267 0 9.536 4.184 9.536 9.348a9.203 9.203 0 0 1-2.3 6.086l-.273.954-.602 2.112c2.952-1.993 4.89-5.335 4.89-9.122C23.25 6.468 18.213 1.516 12 1.516Zm0 2.673c-.924 0-1.814.148-2.648.414v13.713h8.817a8.246 8.246 0 0 0 2.36-5.768c0-4.617-3.818-8.359-8.529-8.359zM2.104 7.312A10.858 10.858 0 0 0 .75 12.576c0 1.906.492 3.7 1.355 5.266z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            LeagueProject
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Application to true data
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="" data-md-color-primary="purple" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"></path></svg>
+</label>
+<input aria-label="Switch to light mode`" class="md-option" data-md-color-accent="indigo" data-md-color-media="" data-md-color-primary="purple" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode`">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"></path></svg>
+</label>
+</form>
+<script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/renecotyfanboy/leagueProject" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    leagueProject
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="LeagueProject" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="LeagueProject">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m1.912 0 1.212 2.474v19.053L1.912 24h14.73l1.337-4.682H8.33V0ZM12 1.516c-.913 0-1.798.112-2.648.312v1.74A9.738 9.738 0 0 1 12 3.2c5.267 0 9.536 4.184 9.536 9.348a9.203 9.203 0 0 1-2.3 6.086l-.273.954-.602 2.112c2.952-1.993 4.89-5.335 4.89-9.122C23.25 6.468 18.213 1.516 12 1.516Zm0 2.673c-.924 0-1.814.148-2.648.414v13.713h8.817a8.246 8.246 0 0 0 2.36-5.768c0-4.617-3.818-8.359-8.529-8.359zM2.104 7.312A10.858 10.858 0 0 0 .75 12.576c0 1.906.492 3.7 1.355 5.266z"></path></svg>
+</a>
+    LeagueProject
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/renecotyfanboy/leagueProject" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    leagueProject
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Dataset
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Dataset
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../dataset/introduction/">
+<span class="md-ellipsis">
+<span class="md-typeset">
+      Description
+    </span>
+</span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../dataset/cookbook/">
+<span class="md-ellipsis">
+<span class="md-typeset">
+      Cookbook
+    </span>
+</span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Around the LoserQ
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Around the LoserQ
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../motivation/">
+<span class="md-ellipsis">
+<span class="md-typeset">
+      Why do I even bother?
+    </span>
+</span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../model/">
+<span class="md-ellipsis">
+<span class="md-typeset">
+      A bit of theory
+    </span>
+</span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../validation/">
+<span class="md-ellipsis">
+<span class="md-typeset">
+      Validating the approach
+    </span>
+</span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+<span class="md-typeset">
+      Application to true data
+    </span>
+</span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+<span class="md-typeset">
+      Application to true data
+    </span>
+</span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#best-fit-model">
+<span class="md-ellipsis">
+<span class="md-typeset">
+          Best-fit model
+        </span>
+</span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#streak-lengths">
+<span class="md-ellipsis">
+<span class="md-typeset">
+          Streak lengths
+        </span>
+</span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#auto-correlation">
+<span class="md-ellipsis">
+<span class="md-typeset">
+          Auto-correlation
+        </span>
+</span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conclusion">
+<span class="md-ellipsis">
+<span class="md-typeset">
+          Conclusion
+        </span>
+</span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Around trueskill2
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Around trueskill2
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../trueskill2/introduction/">
+<span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    API reference
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../api/data/">
+<span class="md-ellipsis">
+    
+  
+    data
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../api/model/">
+<span class="md-ellipsis">
+    
+  
+    model
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../api/inference/">
+<span class="md-ellipsis">
+    
+  
+    inference
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../api/plot/">
+<span class="md-ellipsis">
+    
+  
+    plot
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#best-fit-model">
+<span class="md-ellipsis">
+<span class="md-typeset">
+          Best-fit model
+        </span>
+</span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#streak-lengths">
+<span class="md-ellipsis">
+<span class="md-typeset">
+          Streak lengths
+        </span>
+</span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#auto-correlation">
+<span class="md-ellipsis">
+<span class="md-typeset">
+          Auto-correlation
+        </span>
+</span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conclusion">
+<span class="md-ellipsis">
+<span class="md-typeset">
+          Conclusion
+        </span>
+</span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="Navigation" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../..">
+<span class="md-ellipsis">
+    Home
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="../motivation/">
+<span class="md-ellipsis">
+    Around the LoserQ
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<h1 id="application-to-true-data">Application to true data</h1>
+<div class="admonition abstract">
+<p class="admonition-title">TL;DR</p>
+<ul>
+<li>When applied to real data, the best model to describe the history of matches is a 1st order <abbr title="Discrete-time Markov Chain">DTMC</abbr>.</li>
+<li>Matches in the dataset show a weak but statistically significant correlation with the previous game.</li>
+<li>The best-fitting model is good at describing the observed streak length distribution and autocorrelation.</li>
+</ul>
+</div>
+<h2 id="best-fit-model">Best-fit model</h2>
+<p>It's time to see what we get with our data set of real matches. Let's fit our model and look at the ELDP-<abbr title="Leave One Out">LOO</abbr> comparison plot.</p>
+<div class="grid cards">
+<ul>
+<li>
+<p><p style="text-align: center;"> <strong>Comparison of <abbr title="Discrete-time Markov Chain">DTMC</abbr> Models on True Data</strong> </p></p>
+<div class="mkdocs-plotly" data-jsonpath="../assets/true_data_compare_results_balanced.json"></div>
+<p><p style="text-align: justify; width: 80%; margin-left: auto; margin-right: auto;">
+   Comparison of the <abbr title="Expected log predictive density">ELPD</abbr>-<abbr title="Leave One Out">LOO</abbr> metric for different depths of the <abbr title="Discrete-time Markov Chain">DTMC</abbr> model, along with the difference to the best <abbr title="Expected log predictive density">ELPD</abbr>-<abbr title="Leave One Out">LOO</abbr> value. 
+</p></p>
+</li>
+</ul>
+</div>
+<p>The previous comparison shows that the best model to describe the history we observe is a 1st order <abbr title="Discrete-time Markov Chain">DTMC</abbr>, where the outcome of a game <em>weakly</em> depends on the previous game. In other words, the best way to predict the outcome of a game is to know the outcome of the previous game. This is the most significant dependence we can find using the full dataset. Note that the second and third order models are also compatible, but this is probably because they can also reproduce the first order model, but with a bit of overfitting that reduces the <abbr title="Expected log predictive density">ELPD</abbr>-<abbr title="Leave One Out">LOO</abbr> metric. This behaviour is similar to what we observed when validating the model on the simulated data. We would expect that a significant LoserQ would induce a much higher order correlation. Let us focus a little more on the first order model. We can plot the associated transition probabilities for this model.</p>
+<div class="grid cards">
+<ul>
+<li>
+<p><p style="text-align: center;"> <strong>Winning after winning</strong> </p>
+<div class="mkdocs-plotly" data-jsonpath="../assets/true_data_transition_probas_0.json"></div></p>
+</li>
+<li>
+<p><p style="text-align: center;"> <strong>Losing after winning</strong> </p>
+<div class="mkdocs-plotly" data-jsonpath="../assets/true_data_transition_probas_1.json"></div></p>
+</li>
+<li>
+<p><p style="text-align: center;"> <strong>Winning after losing</strong> </p>
+<div class="mkdocs-plotly" data-jsonpath="../assets/true_data_transition_probas_2.json"></div></p>
+</li>
+<li>
+<p><p style="text-align: center;"> <strong>Losing after losing</strong> </p>
+<div class="mkdocs-plotly" data-jsonpath="../assets/true_data_transition_probas_3.json"></div></p>
+</li>
+</ul>
+</div>
+<p>The first thing that stands out is that the parameters are very well constrained around 50% (beware of the x-axes that are between 49% and 51%). The posterior distributions are clearly Gaussian and can be interpreted quite easily. With this dataset you get a probability of winning the next game of <span class="arithmatex">\((50.12 \pm 0.17) \%\)</span> if the previous game was a win and the probability of losing the next game is <span class="arithmatex">\((50.60 \pm 0.17) \%\)</span> if the previous is a loss. There is a small but significant difference between the two, consistent with the hypothesis that the outcome of a game is not completely independent of the previous one. However, these numbers are too low to generate significantly long winning and losing streaks for any player. We will look at these characteristics in more detail in the following sections.</p>
+<h2 id="streak-lengths">Streak lengths</h2>
+<p>To check that our best-fit model actually describes our data, we can do what is called posterior predictive checks. This is a simple procedure where you generate a lot of data using the best-fit model and compare the distribution of the observables with the real data. This is a good way of checking that the model can reproduce the observed data. One problem with directly comparing the true histories with the model is that it is difficult to compare two random processes directly. Imagine having to compare two series of coin tosses: checking each one to see if the results are the same is nonsense because it is stochastic. However, you can easily compare averaged quantities, such as the mean of the two series, their standard deviation, etc. Below I compare the distribution of streak lengths from the real data set with what we expected to measure using the best-fit model. Below is the distribution of streak lengths in our real dataset of match histories. </p>
+<div class="grid cards">
+<ul>
+<li><p style="text-align: center;"> <strong>Streak length distribution</strong> </p>
+<div class="mkdocs-plotly" data-jsonpath="../assets/history_streak_histogram.json"></div>
+<p style="text-align: justify; width: 80%; margin-left: auto; margin-right: auto;">
+    Distribution of the lengths of the streak of wins and losses in the dataset. Note that the y-axis is in log scale.
+    </p></li>
+</ul>
+</div>
+<p class="annotate">This kind of looks like the results I got in my previous post, we see that some players are experiencing really long winning or losing streaks (up to 16 wins and 17 losses in a row (1)). That's <span class="arithmatex">\(\sim 2\)</span> streaks over <span class="arithmatex">\(10000\)</span> of a frequency in our dataset.</p>
+<ol>
+<li><div class="tenor-gif-embed" data-aspect-ratio="1.77778" data-postid="27295909" data-share-method="host" data-width="100%"><a href="https://tenor.com/view/%C3%A7a-fait-beaucoup-la-non-gif-27295909">ça Fait Beaucoup La Non GIF</a>from <a href="https://tenor.com/search/%C3%A7a+fait+beaucoup+la+non-gifs">ça Fait Beaucoup La Non GIFs</a></div> <script async="" src="https://tenor.com/embed.js" type="text/javascript"></script></li>
+</ol>
+<p>In the next graph I simulate 100 data sets and calculate the streak lengths for each of them to propagate the uncertainties coming from the sample variance and the model. I do the same for the obvious LoserQ model that I used in the validation to show what we would expect in this case.</p>
+<div class="grid cards">
+<ul>
+<li>
+<p><p style="text-align: center;"> <strong>Streak length distribution in the dataset compared to prediction</strong> </p>
+<div class="mkdocs-plotly" data-jsonpath="../assets/mock_streak_histogram_win.json"></div></p>
+<p><div class="mkdocs-plotly" data-jsonpath="../assets/mock_streak_histogram_loss.json"></div>
+<p style="text-align: justify; width: 80%; margin-left: auto; margin-right: auto;">
+Distribution of the lengths of the streak of wins and losses in the dataset. Note that the y-axis is in log scale.
+</p></p>
+</li>
+</ul>
+</div>
+<p>As before, the real data matches the simulated data. This is indicated by the fact that the real data falls between the <span class="arithmatex">\(95\%\)</span> confidence interval of the simulated data. This means that the streak lengths we see in the player dataset are compatible with what we expect from the best-fit model. </p>
+<h2 id="auto-correlation">Auto-correlation</h2>
+<p>The autocorrelation of a sequence is a measure of the similarity between the sequence and a delayed version of itself. This is another type of measure that we can use to check both the correlation within the dataset and the validity of our model. It is also the most visual way to see if the outcome of a game depends on the previous games. It can be calculated using the following formula:</p>
+<div class="arithmatex">\[
+R_X(k) = \mathbb{E}\left[ X_i \times X_{i-k} \right]
+\]</div>
+<p>This is the measure of the average of the product between two games that are <span class="arithmatex">\(k\)</span> games apart. If the sequence is random, then the autocorrelation should be close to 0. If the sequence is <em>positively</em> correlated (if you win a game, you have more chances of winning after <span class="arithmatex">\(k\)</span> others), then the autocorrelation should be close to 1. Conversely, if the sequence is <em>negatively</em> correlated (if you win a game, you have more chances of losing after <span class="arithmatex">\(k\)</span> others), then the auto-correlation should be close to -1. The following graph shows the auto-correlation of a sequence of games where the outcome of each game depends only on the previous game. </p>
+<div class="grid cards">
+<ul>
+<li><p style="text-align: center;"> <strong>Interpretation of auto-correlation</strong> </p>
+<div class="mkdocs-plotly" data-jsonpath="../assets/simulated_correlation.json"></div></li>
+</ul>
+</div>
+<details class="note">
+<summary>Note</summary>
+<p>The graph of the <abbr title="Discrete-time Markov Chain">DTMC</abbr> model used to draw the previous plot are the following : </p>
+<div class="grid cards" markdown="">
+<ul>
+<li>
+<p><strong>Random model</strong>
+<pre class="mermaid"><code>graph LR
+    Win --&gt;|50%| Loss
+    Loss --&gt;|50%| Win
+    Win --&gt;|50%| Win
+    Loss --&gt;|50%| Loss</code></pre></p>
+</li>
+<li>
+<p><strong>Correlated model</strong>
+<pre class="mermaid"><code>graph LR
+    Win --&gt;|20%| Loss
+    Loss --&gt;|20%| Win
+    Win --&gt;|80%| Win
+    Loss --&gt;|80%| Loss</code></pre></p>
+</li>
+<li>
+<p><strong>Anti-correlated model</strong>
+<pre class="mermaid"><code>graph LR
+    Win --&gt;|80%| Loss
+    Loss --&gt;|80%| Win
+    Win --&gt;|20%| Win
+    Loss --&gt;|20%| Loss</code></pre></p>
+</li>
+</ul>
+</div>
+</details>
+<p>We compute the auto-correlation for a simulated dataset generated using the best-fit model and compare it to the auto-correlation of the true dataset. The bands represent the 95% spread of the auto-correlation within the simulated dataset, and we overlap samples from the true dataset to show that it is consistent. We also add the auto-correlation of the obvious LoserQ model to show that we would expect higher values up to a lag of 4, which is the order of the underlying <abbr title="Discrete-time Markov Chain">DTMC</abbr> model. </p>
+<div class="grid cards">
+<ul>
+<li><p style="text-align: center;"> <strong>Auto-correlation in the dataset compared to prediction</strong> </p>
+<div class="mkdocs-plotly" data-jsonpath="../assets/true_data_correlation.json"></div></li>
+</ul>
+</div>
+<p>Once again, we see that this quantity is well predicted by our best-fit <abbr title="Discrete-time Markov Chain">DTMC</abbr> model, while a significant deviation from zero should be visible if there were an efficient LoserQ at act. However, the first-order dynamics we have shown are so small that they would have been difficult to detect without the use of <abbr title="Discrete-time Markov Chain">DTMC</abbr>, which provides some additional motivation for this approach. </p>
+<h2 id="conclusion">Conclusion</h2>
+<p>So have we shown that there is no LoserQ in League of Legend? Finally? For good? Well, no. In fact, it's impossible to prove that unicorns, dragons and good-smelling League players don't exist. This statement also applies to a lot of other things, including LoserQ. I cannot ontologically disprove their existence without looking at the matchmaking source code. However, we can still get a good interpretation from these results. What is shown here is that matches can be modelled very well by a <abbr title="Discrete-time Markov Chain">DTMC</abbr> that only needs the previous game to define its transitions. In short, using only win/loss information, the best way to predict the outcome of a player's match is to look at his last game. He will then have a <span class="arithmatex">\((50.12 \pm 0.17) \%\)</span> chance of winning if his previous game was won, and <span class="arithmatex">\((49.40 \pm 0.17) \%\)</span> if his previous game was lost. This behaviour was confirmed by studying the series lengths or autocorrelation that such dynamics would induce and comparing them with what is observed in the real data.</p>
+<p>I wouldn't interpret such low values as the result of a process designed to increase player engagement. If this is indeed the case, then Riot's competence is questionable, as the effect of this LoserQ would only be seen once or twice out of several hundred games. In general, it's healthier to come up with simpler, more reasonable interpretations when you're in this kind of situation. Typically, we know that players are more biased after losing<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>, and that players' bias reduces their overall probability of winning<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup><sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup><sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup>. This elementary explanation isn't necessarily the right one, but because it's simple, it should be preferred until proven otherwise. In the end, even using a more robust methodology and better quality data, we still find the same results as I presented on reddit in 2023.</p>
+<div class="admonition tip">
+<p class="admonition-title">Takeaways</p>
+<p>Players reduce their win rate by <span class="arithmatex">\((0.60 \pm 0.17) \%\)</span> after a loss and increase it by <span class="arithmatex">\((0.12 \pm 0.17) \%\)</span> after a win. This is a significant departure from randomness, but you can see its effect once or twice for hundreds of players. In this situation, either LoserQ does not exist, or if it does, it is really ineffective. </p>
+</div>
+<details class="danger">
+<summary>Why people would still believe in LoserQ?</summary>
+<ul>
+<li>Being ranked too low/high early in the season, leading to large win/loss streaks until the hidden Elo stabilises.</li>
+<li>Underdamped MMR system, where the official rank would be much faster to move than the hidden elo.</li>
+<li>Confirmation bias, as many people think they see patterns in the player they are matched against. </li>
+<li>Coping, as lower ranked players tend to overestimate their own skill and think they are being held back by matchmaking<sup id="fnref:5"><a class="footnote-ref" href="#fn:5">5</a></sup>.</li>
+<li>And many other reasons, I suppose</li>
+</ul>
+</details>
+<div class="footnote">
+<hr/>
+<ol>
+<li id="fn:1">
+<p><a href="https://www.sciencedirect.com/science/article/abs/pii/S0747563221003538"><strong>Analyzing the changes in the psychological profile of professional League of Legends players during competition</strong>, <em>Mateo-Orcajada &amp; al</em> (2022)</a> <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+<li id="fn:2">
+<p><a href="https://dl.acm.org/doi/abs/10.1145/3411764.3445143"><strong>Understanding Tilt in Esports: A Study on Young League of Legends Players</strong>, <em>Wu &amp; Lee</em> (2021)</a> <a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">↩</a></p>
+</li>
+<li id="fn:3">
+<p><a href="https://escholarship.org/content/qt61p8c951/qt61p8c951.pdf"><strong>Exploring Stress in Esports Gaming: Physiological and Data-driven approach on Tilt</strong>, <em>Lee</em> (2021)</a> <a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">↩</a></p>
+</li>
+<li id="fn:4">
+<p><a href="https://www.tandfonline.com/doi/abs/10.1080/15213269.2020.1868322"><strong>Effects of individual toxic behavior on team performance in League of Legends</strong>, <em>Monge &amp; O'Brien</em> (2017)</a> <a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">↩</a></p>
+</li>
+<li id="fn:5">
+<p><a href="https://www.sciencedirect.com/science/article/pii/S0747563223001796"><strong>The psychology of esports players’ ELO Hell: Motivated bias in League of Legends and its impact on players’ overestimation of skill</strong>, <em>Aeschbach &amp; al</em> (2023)</a> <a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 5 in the text">↩</a></p>
+</li>
+</ol>
+</div>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+</main>
+<footer class="md-footer">
+<nav aria-label="Footer" class="md-footer__inner md-grid">
+<a aria-label="Previous: Validating the approach" class="md-footer__link md-footer__link--prev" href="../validation/">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                Previous
+              </span>
+<div class="md-ellipsis">
+                Validating the approach
+              </div>
+</div>
+</a>
+<a aria-label="Next: Introduction" class="md-footer__link md-footer__link--next" href="../../trueskill2/introduction/">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                Next
+              </span>
+<div class="md-ellipsis">
+                Introduction
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      This project isn't endorsed by Riot Games.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs Insiders
+    </a>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://github.com/renecotyfanboy" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 496 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg>
+</a>
+<a class="md-social__link" href="https://www.reddit.com/user/renecotyfanboy/" rel="noopener" target="_blank" title="www.reddit.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M0 256C0 114.6 114.6 0 256 0s256 114.6 256 256-114.6 256-256 256H37.1c-13.7 0-20.5-16.5-10.9-26.2L75 437C28.7 390.7 0 326.7 0 256zm349.6-102.4c23.6 0 42.7-19.1 42.7-42.7s-19.1-42.7-42.7-42.7c-20.6 0-37.8 14.6-41.8 34-34.5 3.7-61.4 33-61.4 68.4v.2c-37.5 1.6-71.8 12.3-99 29.1-10.1-7.8-22.8-12.5-36.5-12.5-33 0-59.8 26.8-59.8 59.8 0 24 14.1 44.6 34.4 54.1 2 69.4 77.6 125.2 170.6 125.2s168.7-55.9 170.6-125.3c20.2-9.6 34.1-30.2 34.1-54 0-33-26.8-59.8-59.8-59.8-13.7 0-26.3 4.6-36.4 12.4-27.4-17-62.1-27.7-100-29.1v-.2c0-25.4 18.9-46.5 43.4-49.9 4.4 18.8 21.3 32.8 41.5 32.8zm-172.5 93.3c16.7 0 29.5 17.6 28.5 39.3s-13.5 29.6-30.3 29.6-31.4-8.8-30.4-30.5S160.3 247 177 247zm190.1 38.3c1 21.7-13.7 30.5-30.4 30.5s-29.3-7.9-30.3-29.6c-1-21.7 11.8-39.3 28.5-39.3s31.2 16.6 32.1 38.3zm-48.1 56.7c-10.3 24.6-34.6 41.9-63 41.9s-52.7-17.3-63-41.9c-1.2-2.9.8-6.2 3.9-6.5 18.4-1.9 38.3-2.9 59.1-2.9s40.7 1 59.1 2.9c3.1.3 5.1 3.6 3.9 6.5z"></path></svg>
+</a>
+<a class="md-social__link" href="https://x.com/ReneCotyFanboy" rel="noopener" target="_blank" title="x.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9L389.2 48zm-24.8 373.8h39.1L151.1 88h-42l255.3 333.8z"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tracking", "content.footnote.tooltips", "navigation.sections", "navigation.path", "content.code.annotate", "content.code.copy", "content.tooltips", "navigation.footer"], "search": "../../assets/javascripts/workers/search.1e90e0fb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+<script src="../../assets/javascripts/bundle.d249fdc4.min.js"></script>
+<script src="../../javascripts/katex.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/contrib/auto-render.min.js"></script>
+<span hidden="True" id="default-template-settings">{"font.color": "#2a3f5f", "paper_bgcolor": "rgba(0,0,0,0)", "plot_bgcolor": "#E5ECF6", "polar.bgcolor": "#E5ECF6", "polar.angularaxis.gridcolor": "white", "polar.angularaxis.linecolor": "white", "polar.radialaxis.gridcolor": "white", "polar.radialaxis.linecolor": "white", "ternary.bgcolor": "#E5ECF6", "ternary.aaxis.gridcolor": "white", "ternary.aaxis.linecolor": "white", "ternary.baxis.gridcolor": "white", "ternary.baxis.linecolor": "white", "ternary.caxis.gridcolor": "white", "ternary.caxis.linecolor": "white", "xaxis.gridcolor": "white", "xaxis.linecolor": "white", "xaxis.zerolinecolor": "white", "yaxis.gridcolor": "white", "yaxis.linecolor": "white", "yaxis.zerolinecolor": "white", "scene.xaxis.backgroundcolor": "#E5ECF6", "scene.xaxis.gridcolor": "white", "scene.xaxis.linecolor": "white", "scene.xaxis.zerolinecolor": "white", "scene.yaxis.backgroundcolor": "#E5ECF6", "scene.yaxis.gridcolor": "white", "scene.yaxis.linecolor": "white", "scene.yaxis.zerolinecolor": "white", "scene.zaxis.backgroundcolor": "#E5ECF6", "scene.zaxis.gridcolor": "white", "scene.zaxis.linecolor": "white", "scene.zaxis.zerolinecolor": "white", "shapedefaults.line.color": "#2a3f5f", "annotationdefaults.arrowcolor": "#2a3f5f", "geo.bgcolor": "white", "geo.landcolor": "#E5ECF6", "geo.subunitcolor": "white", "geo.lakecolor": "white", "mapbox.style": "light"}</span><span hidden="True" id="slate-template-settings">{"autotypenumbers": "strict", "colorway": ["#636efa", "#EF553B", "#00cc96", "#ab63fa", "#FFA15A", "#19d3f3", "#FF6692", "#B6E880", "#FF97FF", "#FECB52"], "font.color": "#f2f5fa", "hovermode": "closest", "hoverlabel.align": "left", "paper_bgcolor": "rgba(17,17,17,0)", "plot_bgcolor": "rgb(17,17,17)", "polar.bgcolor": "rgb(17,17,17)", "polar.angularaxis.gridcolor": "#506784", "polar.angularaxis.linecolor": "#506784", "polar.angularaxis.ticks": "", "polar.radialaxis.gridcolor": "#506784", "polar.radialaxis.linecolor": "#506784", "polar.radialaxis.ticks": "", "ternary.bgcolor": "rgb(17,17,17)", "ternary.aaxis.gridcolor": "#506784", "ternary.aaxis.linecolor": "#506784", "ternary.aaxis.ticks": "", "ternary.baxis.gridcolor": "#506784", "ternary.baxis.linecolor": "#506784", "ternary.baxis.ticks": "", "ternary.caxis.gridcolor": "#506784", "ternary.caxis.linecolor": "#506784", "ternary.caxis.ticks": "", "coloraxis.colorbar.outlinewidth": 0, "coloraxis.colorbar.ticks": "", "colorscale.sequential": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "colorscale.sequentialminus": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "colorscale.diverging": [[0, "#8e0152"], [0.1, "#c51b7d"], [0.2, "#de77ae"], [0.3, "#f1b6da"], [0.4, "#fde0ef"], [0.5, "#f7f7f7"], [0.6, "#e6f5d0"], [0.7, "#b8e186"], [0.8, "#7fbc41"], [0.9, "#4d9221"], [1, "#276419"]], "xaxis.gridcolor": "#283442", "xaxis.linecolor": "#506784", "xaxis.ticks": "", "xaxis.title.standoff": 15, "xaxis.zerolinecolor": "#283442", "xaxis.automargin": true, "xaxis.zerolinewidth": 2, "yaxis.gridcolor": "#283442", "yaxis.linecolor": "#506784", "yaxis.ticks": "", "yaxis.title.standoff": 15, "yaxis.zerolinecolor": "#283442", "yaxis.automargin": true, "yaxis.zerolinewidth": 2, "scene.xaxis.backgroundcolor": "rgb(17,17,17)", "scene.xaxis.gridcolor": "#506784", "scene.xaxis.linecolor": "#506784", "scene.xaxis.showbackground": true, "scene.xaxis.ticks": "", "scene.xaxis.zerolinecolor": "#C8D4E3", "scene.xaxis.gridwidth": 2, "scene.yaxis.backgroundcolor": "rgb(17,17,17)", "scene.yaxis.gridcolor": "#506784", "scene.yaxis.linecolor": "#506784", "scene.yaxis.showbackground": true, "scene.yaxis.ticks": "", "scene.yaxis.zerolinecolor": "#C8D4E3", "scene.yaxis.gridwidth": 2, "scene.zaxis.backgroundcolor": "rgb(17,17,17)", "scene.zaxis.gridcolor": "#506784", "scene.zaxis.linecolor": "#506784", "scene.zaxis.showbackground": true, "scene.zaxis.ticks": "", "scene.zaxis.zerolinecolor": "#C8D4E3", "scene.zaxis.gridwidth": 2, "shapedefaults.line.color": "#f2f5fa", "annotationdefaults.arrowcolor": "#f2f5fa", "annotationdefaults.arrowhead": 0, "annotationdefaults.arrowwidth": 1, "geo.bgcolor": "rgb(17,17,17)", "geo.landcolor": "rgb(17,17,17)", "geo.subunitcolor": "#506784", "geo.showland": true, "geo.showlakes": true, "geo.lakecolor": "rgb(17,17,17)", "title.x": 0.05, "updatemenudefaults.bgcolor": "#506784", "updatemenudefaults.borderwidth": 0, "sliderdefaults.bgcolor": "#C8D4E3", "sliderdefaults.borderwidth": 1, "sliderdefaults.bordercolor": "rgb(17,17,17)", "sliderdefaults.tickwidth": 0, "mapbox.style": "dark"}</span><script src="../../assets/javascripts/mkdocs-plotly-plugin.js"></script><script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
+</html>
